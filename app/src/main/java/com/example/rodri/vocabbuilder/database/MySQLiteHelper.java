@@ -24,6 +24,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_LANGUAGE = "language";
     public static final String TABLE_WORD_LANGUAGE = "word_language";
     public static final String TABLE_PERFORMANCE = "performance";
+    public static final String TABLE_WORD_PERFORMANCE = "word_performance";
 
     // Common column names
     public static final String KEY_ID = "id";
@@ -47,9 +48,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     // WordLanguage: column names { word_id, ... }
     public static final String COLUMN_LANGUAGE_ID = "language_id";
 
-    // Performance: column names { id, word_id, ... }
+    // Performance: column names { id, ... }
     public static final String COLUMN_CORRECT = "correct";
     public static final String COLUMN_INCORRECT = "incorrect";
+
+    // WordPerformance: column names { word_id, ... }
+    public static final String COLUMN_PERFORMANCE_ID = "performance_id";
 
 
     /** -------------- CREATE TABLES -------------- **/
@@ -93,10 +97,16 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String CREATE_TABLE_PERFORMANCE =
             "CREATE TABLE " + TABLE_PERFORMANCE + " ("
             + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + COLUMN_WORD_ID + " INTEGER NOT NULL, "
             + COLUMN_CORRECT + " INTEGER NOT NULL, "
-            + COLUMN_INCORRECT + " INTEGER NOT NULL, "
-            + "FOREIGN KEY (" + COLUMN_WORD_ID + ") REFERENCES " + TABLE_WORD + " (" + KEY_ID + "));";
+            + COLUMN_INCORRECT + " INTEGER NOT NULL);";
+
+    public static final String CREATE_TABLE_WORD_PERFORMANCE =
+            "CREATE TABLE " + TABLE_WORD_PERFORMANCE + " ("
+            + COLUMN_WORD_ID + " INTEGER NOT NULL, "
+            + COLUMN_PERFORMANCE_ID + " INTEGER NOT NULL, "
+            + "PRIMARY KEY (" + COLUMN_WORD_ID + ", " + COLUMN_PERFORMANCE_ID + "), "
+            + "FOREIGN KEY (" + COLUMN_WORD_ID + ") PREFERENCES " + TABLE_WORD + " (" + KEY_ID + "), "
+            + "FOREIGN KEY (" + COLUMN_PERFORMANCE_ID + ") REFERENCES " + TABLE_PERFORMANCE + " (" + KEY_ID + "));";
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -110,6 +120,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_LANGUAGE);
         db.execSQL(CREATE_TABLE_WORD_LANGUAGE);
         db.execSQL(CREATE_TABLE_PERFORMANCE);
+        db.execSQL(CREATE_TABLE_WORD_PERFORMANCE);
     }
 
     @Override
