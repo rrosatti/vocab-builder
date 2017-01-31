@@ -6,6 +6,14 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.rodri.vocabbuilder.model.Language;
+import com.example.rodri.vocabbuilder.model.Performance;
+import com.example.rodri.vocabbuilder.model.User;
+import com.example.rodri.vocabbuilder.model.Word;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by rodri on 1/31/2017.
  */
@@ -155,6 +163,174 @@ public class MyDataSource {
      * getPerformanceId (wordId)
      */
 
+    public User getUser(long userId) {
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_USER, userColumns,
+                MySQLiteHelper.KEY_ID + " = " + userId, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return null;
+        }
+        cursor.moveToFirst();
+
+        User user = cursorToUser(cursor);
+        cursor.close();
+
+        return user;
+
+    }
+
+    public User getUser(String username, String password) {
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_USER, userColumns,
+                MySQLiteHelper.COLUMN_USERNAME + " = " + username + " AND "
+                        + MySQLiteHelper.COLUMN_PASSWORD + " = " + password, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return null;
+        }
+        cursor.moveToFirst();
+
+        User user = cursorToUser(cursor);
+        cursor.close();
+
+        return user;
+    }
+
+    public Word getWord(long wordId) {
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_WORD, wordColumns,
+                MySQLiteHelper.KEY_ID + " = " + wordId, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return null;
+        }
+        cursor.moveToFirst();
+
+        Word word = cursorToWord(cursor);
+        cursor.close();
+
+        return word;
+    }
+
+    public List<Word> getWords(long userId) {
+        List<Word> words = new ArrayList<>();
+        Cursor cursorWordIds = db.query(MySQLiteHelper.TABLE_USER_WORD, userWordColumns,
+                MySQLiteHelper.COLUMN_USER_ID + " = " + userId, null, null, null, null, null);
+
+        if (isCursorEmpty(cursorWordIds)) {
+            cursorWordIds.close();
+            return null;
+        }
+        cursorWordIds.moveToFirst();
+
+        while(!cursorWordIds.isAfterLast()) {
+            Cursor cursorWord = db.query(MySQLiteHelper.TABLE_WORD, wordColumns,
+                    MySQLiteHelper.KEY_ID + " = " + cursorWordIds.getLong(1), null, null, null, null, null);
+
+            if (!isCursorEmpty(cursorWord)) {
+                cursorWord.moveToFirst();
+                words.add(cursorToWord(cursorWord));
+            }
+
+        }
+
+        return words;
+    }
+
+    public Language getLanguage(long languageId) {
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_LANGUAGE, languageColumns,
+                MySQLiteHelper.KEY_ID + " = " + languageId, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return null;
+        }
+        cursor.moveToFirst();
+
+        Language language = cursorToLanguage(cursor);
+        cursor.close();
+
+        return language;
+    }
+
+    public long getLanguageId(long wordId) {
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_WORD_LANGUAGE, wordLanguageColumns,
+                MySQLiteHelper.COLUMN_WORD_ID + " = " + wordId, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return 0;
+        }
+        cursor.moveToFirst();
+
+        return cursor.getLong(1);
+    }
+
+    public Performance getPerformance(long performanceId) {
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_PERFORMANCE, performanceColumns,
+                MySQLiteHelper.KEY_ID + " = " + performanceId, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return null;
+        }
+        cursor.moveToFirst();
+
+        Performance performance = cursorToPerformance(cursor);
+        cursor.close();
+
+        return performance;
+    }
+
+    public long getPerformanceId(long wordId) {
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_WORD_PERFORMANCE, wordPerformanceColumns,
+                MySQLiteHelper.COLUMN_WORD_ID + " = " + wordId, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return 0;
+        }
+        cursor.moveToFirst();
+
+        return cursor.getLong(1);
+    }
+    
+
+    /** --------------- CURSOR TO --------------- **/
+    public User cursorToUser(Cursor cursor) {
+        User user = new User();
+        user.setId(cursor.getLong(0));
+        user.setName(cursor.getString(1));
+        user.setName(cursor.getString(2));
+        user.setPassword(cursor.getString(3));
+        return user;
+    }
+
+    public Word cursorToWord(Cursor cursor) {
+        Word word = new Word();
+        word.setId(cursor.getLong(0));
+        word.setName(cursor.getString(1));
+        word.setTranslation1(cursor.getString(2));
+        word.setTranslation2(cursor.getString(3));
+        word.setTranslation3(cursor.getString(4));
+        return word;
+    }
+
+    public Language cursorToLanguage(Cursor cursor) {
+        Language language = new Language();
+        language.setId(cursor.getLong(0));
+        language.setName(cursor.getString(1));
+        return language;
+    }
+
+    public Performance cursorToPerformance(Cursor cursor) {
+        Performance performance = new Performance();
+        performance.setId(cursor.getLong(0));
+        performance.setCorrect(cursor.getInt(1));
+        performance.setIncorrect(cursor.getInt(2));
+        return performance;
+    }
 
 
     /** --------------- OTHER --------------- **/
@@ -163,6 +339,7 @@ public class MyDataSource {
         if (cursor.moveToFirst()) {
             return false;
         } else {
+            System.out.println("The cursor is empty!");
             return true;
         }
     }
