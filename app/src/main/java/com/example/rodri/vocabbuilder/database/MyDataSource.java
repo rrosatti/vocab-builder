@@ -295,7 +295,7 @@ public class MyDataSource {
 
         return cursor.getLong(1);
     }
-    
+
 
     /** --------------- CURSOR TO --------------- **/
     public User cursorToUser(Cursor cursor) {

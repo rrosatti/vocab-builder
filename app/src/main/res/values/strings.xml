@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Vocab Builder</string>
+    
+    <!-- Hint -->
+    <string name="hint_username">username</string>
+    <string name="hint_password">password</string>
+    <string name="hint_name">personal name</string>
+
+    <!-- Button -->
+    <string name="button_login">Login</string>
+    <string name="button_sign_up">Sign Up</string>
+    <string name="button_confirm">Confirm</string>
+    <string name="button_cancel">Cancel</string>
+
+    <!-- Toast -->
+    <string name="toast_login_failed">username or password are incorrect!</string>
+    <string name="toast_login_succeeded">Welcome!</string>
+    
 </resources>
