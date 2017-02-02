@@ -105,7 +105,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_WORD_ID + " INTEGER NOT NULL, "
             + COLUMN_PERFORMANCE_ID + " INTEGER NOT NULL, "
             + "PRIMARY KEY (" + COLUMN_WORD_ID + ", " + COLUMN_PERFORMANCE_ID + "), "
-            + "FOREIGN KEY (" + COLUMN_WORD_ID + ") PREFERENCES " + TABLE_WORD + " (" + KEY_ID + "), "
+            + "FOREIGN KEY (" + COLUMN_WORD_ID + ") REFERENCES " + TABLE_WORD + " (" + KEY_ID + "), "
             + "FOREIGN KEY (" + COLUMN_PERFORMANCE_ID + ") REFERENCES " + TABLE_PERFORMANCE + " (" + KEY_ID + "));";
 
     public MySQLiteHelper(Context context) {

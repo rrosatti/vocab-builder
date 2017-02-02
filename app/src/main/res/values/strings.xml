@@ -15,5 +15,10 @@
     <!-- Toast -->
     <string name="toast_login_failed">username or password are incorrect!</string>
     <string name="toast_login_succeeded">Welcome!</string>
+    <string name="toast_sign_up_success">Account created successfully!</string>
+    <string name="toast_sign_up_fail">Something went wrong. Please, try again!</string>
+    <string name="toast_name_field_empty">The personal name field cannot be empty!</string>
+    <string name="toast_username_field_empty">The username field cannot be empty!</string>
+    <string name="toast_password_field_empty">The password field cannot be empty!</string>
     
 </resources>
