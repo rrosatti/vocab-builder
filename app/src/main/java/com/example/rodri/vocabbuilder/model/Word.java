@@ -11,15 +11,17 @@ public class Word {
     private String translation1;
     private String translation2;
     private String translation3;
+    private long addedAt;
 
     public Word() {}
 
-    public Word(long id, String name, String translation1, String translation2, String translation3) {
+    public Word(long id, String name, String translation1, String translation2, String translation3, long addedAt) {
         this.id = id;
         this.name = name;
         this.translation1 = translation1;
         this.translation2 = translation2;
         this.translation3 = translation3;
+        this.addedAt = addedAt;
     }
 
     public long getId() {
@@ -60,5 +62,13 @@ public class Word {
 
     public void setTranslation3(String translation3) {
         this.translation3 = translation3;
+    }
+
+    public long getAddedAt() {
+        return addedAt;
+    }
+
+    public void setAddedAt(long addedAt) {
+        this.addedAt = addedAt;
     }
 }

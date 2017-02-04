@@ -20,5 +20,33 @@
     <string name="toast_name_field_empty">The personal name field cannot be empty!</string>
     <string name="toast_username_field_empty">The username field cannot be empty!</string>
     <string name="toast_password_field_empty">The password field cannot be empty!</string>
+
+    <!-- Languages -->
+    <string-array name="languages">
+        <item>English</item>
+        <item>Spanish</item>
+        <item>German</item>
+        <item>Chinese</item>
+        <item>Portuguese</item>
+        <item>Italian</item>
+        <item>French</item>
+        <item>Turkish</item>
+        <item>Japanese</item>
+        <item>Russian</item>
+    </string-array>
+
+    <!-- "Languages Flags" -->
+    <array name="language_flags">
+        <item>@drawable/english</item>
+        <item>@drawable/spanish</item>
+        <item>@drawable/german</item>
+        <item>@drawable/chinese</item>
+        <item>@drawable/portuguese</item>
+        <item>@drawable/italian</item>
+        <item>@drawable/french</item>
+        <item>@drawable/turkish</item>
+        <item>@drawable/japanese</item>
+        <item>@drawable/russian</item>
+    </array>
     
 </resources>

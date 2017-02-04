@@ -25,7 +25,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_WORD_LANGUAGE = "word_language";
     public static final String TABLE_PERFORMANCE = "performance";
     public static final String TABLE_WORD_PERFORMANCE = "word_performance";
-    public static final String TABLE_WORD_DATE_ADDED = "word_date_added";
 
     // Common column names
     public static final String KEY_ID = "id";
@@ -39,6 +38,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_TRANSLATION1 = "translation1";
     public static final String COLUMN_TRANSLATION2 = "translation2";
     public static final String COLUMN_TRANSLATION3 = "translation3";
+    public static final String COLUMN_ADDED_AT = "added_at";
 
     // UserWord: column names
     public static final String COLUMN_USER_ID = "user_id";
@@ -77,7 +77,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + KEY_NAME + " TEXT NOT NULL, "
             + COLUMN_TRANSLATION1 + " TEXT NOT NULL, "
             + COLUMN_TRANSLATION2 + " TEXT, "
-            + COLUMN_TRANSLATION3 + " TEXT);";
+            + COLUMN_TRANSLATION3 + " TEXT,"
+            + COLUMN_ADDED_AT + " INTEGER NOT NULL);";
 
     public static final String CREATE_TABLE_USER_WORD =
             "CREATE TABLE " + TABLE_USER_WORD + " ("
@@ -114,14 +115,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + "FOREIGN KEY (" + COLUMN_WORD_ID + ") REFERENCES " + TABLE_WORD + " (" + KEY_ID + "), "
             + "FOREIGN KEY (" + COLUMN_PERFORMANCE_ID + ") REFERENCES " + TABLE_PERFORMANCE + " (" + KEY_ID + "));";
 
-    public static final String CREATE_TABLE_WORD_DATE_ADDED =
-            "CREATE TABLE " + TABLE_WORD_DATE_ADDED + " ("
-            + COLUMN_WORD_ID + " INTEGER NOT NULL, "
-            + COLUMN_DAY + " INTEGER NOT NULL, "
-            + COLUMN_MONTH + " INTEGER NOT NULL, "
-            + COLUMN_YEAR + " INTEGER NOT NULL, "
-            + "PRIMARY KEY (" + COLUMN_WORD_ID + "), "
-            + "FOREIGN KEY (" + COLUMN_WORD_ID + ") REFERENCES " + TABLE_WORD + " (" + KEY_ID + "));";
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

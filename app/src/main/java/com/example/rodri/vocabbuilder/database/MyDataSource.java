@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.rodri.vocabbuilder.model.DetailedWord;
 import com.example.rodri.vocabbuilder.model.Language;
 import com.example.rodri.vocabbuilder.model.Performance;
 import com.example.rodri.vocabbuilder.model.User;
@@ -34,7 +35,8 @@ public class MyDataSource {
             MySQLiteHelper.KEY_NAME,
             MySQLiteHelper.COLUMN_TRANSLATION1,
             MySQLiteHelper.COLUMN_TRANSLATION2,
-            MySQLiteHelper.COLUMN_TRANSLATION3
+            MySQLiteHelper.COLUMN_TRANSLATION3,
+            MySQLiteHelper.COLUMN_ADDED_AT
     };
     private String[] userWordColumns = {
             MySQLiteHelper.COLUMN_USER_ID,
@@ -56,12 +58,6 @@ public class MyDataSource {
     private String[] wordPerformanceColumns = {
             MySQLiteHelper.COLUMN_WORD_ID,
             MySQLiteHelper.COLUMN_PERFORMANCE_ID
-    };
-    private String[] wordDateAddedColumns = {
-            MySQLiteHelper.COLUMN_WORD_ID,
-            MySQLiteHelper.COLUMN_DAY,
-            MySQLiteHelper.COLUMN_MONTH,
-            MySQLiteHelper.COLUMN_YEAR
     };
 
     public MyDataSource(Context context) {
@@ -90,12 +86,13 @@ public class MyDataSource {
 
     }
 
-    public long createWord(String name, String trans1, String trans2, String trans3) {
+    public long createWord(String name, String trans1, String trans2, String trans3, long addedAt) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.KEY_NAME, name);
         values.put(MySQLiteHelper.COLUMN_TRANSLATION1, trans1);
         values.put(MySQLiteHelper.COLUMN_TRANSLATION2, trans2);
         values.put(MySQLiteHelper.COLUMN_TRANSLATION3, trans3);
+        values.put(MySQLiteHelper.COLUMN_ADDED_AT, addedAt);
 
         // row id, otherwise 0
         return db.insert(MySQLiteHelper.TABLE_WORD, null, values);
@@ -156,21 +153,6 @@ public class MyDataSource {
         else return false;
 
     }
-
-    public boolean createWordDateAdded(long wordId, int day, int month, int year) {
-        ContentValues values = new ContentValues();
-        values.put(MySQLiteHelper.COLUMN_WORD_ID, wordId);
-        values.put(MySQLiteHelper.COLUMN_DAY, day);
-        values.put(MySQLiteHelper.COLUMN_MONTH, month);
-        values.put(MySQLiteHelper.COLUMN_YEAR, year);
-
-        long inserted = db.insert(MySQLiteHelper.TABLE_WORD_DATE_ADDED, null, values);
-
-        if (inserted != 0) return true;
-        else return false;
-
-    }
-
 
     /** --------------- GET --------------- **/
     /**
@@ -317,24 +299,43 @@ public class MyDataSource {
         return cursor.getLong(1);
     }
 
-    public long getWordDateAdded(long wordId) {
-        Cursor cursor = db.query(MySQLiteHelper.TABLE_WORD_DATE_ADDED, wordDateAddedColumns,
-                MySQLiteHelper.COLUMN_WORD_ID + " = " + wordId, null, null, null, null, null);
+    public DetailedWord getDetailedWord(long wordId) {
+        Word word = getWord(wordId);
+
+        long languageId = getLanguageId(wordId);
+        Language language = getLanguage(languageId);
+
+        long performanceId = getPerformanceId(wordId);
+        Performance performance = getPerformance(performanceId);
+
+        if (word != null && language != null && performance != null) {
+            DetailedWord detailedWord = new DetailedWord(word, language, performance);
+            return detailedWord;
+        } else {
+            System.out.println("Something went wrong. getDetailedWord()");
+            return null;
+        }
+    }
+
+    public List<DetailedWord> getDetailedWords(long userId) {
+        List<DetailedWord> detailedWords = new ArrayList<>();
+
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_USER_WORD, userWordColumns,
+                MySQLiteHelper.COLUMN_USER_ID + " = " + userId, null, null, null, null, null);
 
         if (isCursorEmpty(cursor)) {
             cursor.close();
-            return -1;
+            return null;
         }
         cursor.moveToFirst();
 
-        int day = cursor.getInt(1);
-        int month = cursor.getInt(2);
-        int year = cursor.getInt(3);
+        while (!cursor.isAfterLast()) {
+            detailedWords.add(getDetailedWord(cursor.getLong(1)));
+            cursor.moveToNext();
+        }
+        cursor.close();
 
-        Util util = new Util();
-        long dateInMillis = util.fromDateToMilliseconds(day, month, year);
-
-        return dateInMillis;
+        return detailedWords;
     }
 
 
@@ -355,6 +356,7 @@ public class MyDataSource {
         word.setTranslation1(cursor.getString(2));
         word.setTranslation2(cursor.getString(3));
         word.setTranslation3(cursor.getString(4));
+        word.setAddedAt(cursor.getLong(5));
         return word;
     }
 
