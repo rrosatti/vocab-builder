@@ -10,6 +10,7 @@ import com.example.rodri.vocabbuilder.model.Language;
 import com.example.rodri.vocabbuilder.model.Performance;
 import com.example.rodri.vocabbuilder.model.User;
 import com.example.rodri.vocabbuilder.model.Word;
+import com.example.rodri.vocabbuilder.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,12 @@ public class MyDataSource {
     private String[] wordPerformanceColumns = {
             MySQLiteHelper.COLUMN_WORD_ID,
             MySQLiteHelper.COLUMN_PERFORMANCE_ID
+    };
+    private String[] wordDateAddedColumns = {
+            MySQLiteHelper.COLUMN_WORD_ID,
+            MySQLiteHelper.COLUMN_DAY,
+            MySQLiteHelper.COLUMN_MONTH,
+            MySQLiteHelper.COLUMN_YEAR
     };
 
     public MyDataSource(Context context) {
@@ -150,6 +157,20 @@ public class MyDataSource {
 
     }
 
+    public boolean createWordDateAdded(long wordId, int day, int month, int year) {
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_WORD_ID, wordId);
+        values.put(MySQLiteHelper.COLUMN_DAY, day);
+        values.put(MySQLiteHelper.COLUMN_MONTH, month);
+        values.put(MySQLiteHelper.COLUMN_YEAR, year);
+
+        long inserted = db.insert(MySQLiteHelper.TABLE_WORD_DATE_ADDED, null, values);
+
+        if (inserted != 0) return true;
+        else return false;
+
+    }
+
 
     /** --------------- GET --------------- **/
     /**
@@ -182,8 +203,8 @@ public class MyDataSource {
 
     public User getUser(String username, String password) {
         Cursor cursor = db.query(MySQLiteHelper.TABLE_USER, userColumns,
-                MySQLiteHelper.COLUMN_USERNAME + " = " + username + " AND "
-                        + MySQLiteHelper.COLUMN_PASSWORD + " = " + password, null, null, null, null, null);
+                MySQLiteHelper.COLUMN_USERNAME + " = ('" + username + "') AND "
+                        + MySQLiteHelper.COLUMN_PASSWORD + " = ('" + password + "')", null, null, null, null, null);
 
         if (isCursorEmpty(cursor)) {
             cursor.close();
@@ -294,6 +315,26 @@ public class MyDataSource {
         cursor.moveToFirst();
 
         return cursor.getLong(1);
+    }
+
+    public long getWordDateAdded(long wordId) {
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_WORD_DATE_ADDED, wordDateAddedColumns,
+                MySQLiteHelper.COLUMN_WORD_ID + " = " + wordId, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return -1;
+        }
+        cursor.moveToFirst();
+
+        int day = cursor.getInt(1);
+        int month = cursor.getInt(2);
+        int year = cursor.getInt(3);
+
+        Util util = new Util();
+        long dateInMillis = util.fromDateToMilliseconds(day, month, year);
+
+        return dateInMillis;
     }
 
 
