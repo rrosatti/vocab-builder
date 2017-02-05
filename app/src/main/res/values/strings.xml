@@ -48,5 +48,13 @@
         <item>@drawable/japanese</item>
         <item>@drawable/russian</item>
     </array>
+
+    <!-- Tab Icons -->
+    <array name="tab_icons">
+        <item>@drawable/words_white</item>
+        <item>@drawable/practice_white</item>
+        <item>@drawable/statistics_white</item>
+        <item>@drawable/settings_white</item>
+    </array>
     
 </resources>
