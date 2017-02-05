@@ -1,5 +1,6 @@
 package com.example.rodri.vocabbuilder.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.rodri.vocabbuilder.R;
+import com.example.rodri.vocabbuilder.activity.NewWordActivity;
 import com.example.rodri.vocabbuilder.adapter.DetailedWordAdapter;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
@@ -57,7 +59,8 @@ public class WordsFragment extends Fragment {
         btNewWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Testing", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getActivity(), NewWordActivity.class);
+                startActivity(i);
             }
         });
 

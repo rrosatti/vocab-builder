@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <EditText
+                android:id="@+id/activityNewWord_etWord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_word"
+                android:textStyle="italic"/>
+
+            <Spinner
+                android:id="@+id/activityNewWord_spinnerLanguages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+
+            <EditText
+                android:id="@+id/activityNewWord_etTranslation1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_trans1"
+                android:textStyle="italic"
+                android:layout_marginTop="20dp"/>
+
+            <EditText
+                android:id="@+id/activityNewWord_etTranslation2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_trans2"
+                android:textStyle="italic"
+                android:layout_marginTop="10dp"/>
+
+            <EditText
+                android:id="@+id/activityNewWord_etTranslation3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_trans3"
+                android:textStyle="italic"
+                android:layout_marginTop="10dp"/>
+
+            <Button
+                android:id="@+id/activityNewWord_btConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_confirm"
+                android:layout_marginTop="30dp"/>
+
+            <Button
+                android:id="@+id/activityNewWord_btCancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_cancel"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
