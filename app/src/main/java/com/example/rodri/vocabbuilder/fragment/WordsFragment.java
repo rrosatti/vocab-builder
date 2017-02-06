@@ -1,5 +1,6 @@
 package com.example.rodri.vocabbuilder.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -60,7 +61,7 @@ public class WordsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), NewWordActivity.class);
-                startActivity(i);
+                startActivityForResult(i, 1);
             }
         });
 
@@ -88,6 +89,16 @@ public class WordsFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
             dataSource.close();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case Activity.RESULT_OK: {
+                getDataFromDatabase();
+                listOfWords.setAdapter(adapter);
+            }
         }
     }
 }

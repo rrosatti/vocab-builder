@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
 import com.example.rodri.vocabbuilder.model.Language;
 import com.example.rodri.vocabbuilder.model.Performance;
+import com.example.rodri.vocabbuilder.model.PlayingLog;
 import com.example.rodri.vocabbuilder.model.User;
 import com.example.rodri.vocabbuilder.model.Word;
 import com.example.rodri.vocabbuilder.util.Util;
@@ -58,6 +59,12 @@ public class MyDataSource {
     private String[] wordPerformanceColumns = {
             MySQLiteHelper.COLUMN_WORD_ID,
             MySQLiteHelper.COLUMN_PERFORMANCE_ID
+    };
+    private String[] playingLogColumns = {
+            MySQLiteHelper.KEY_ID,
+            MySQLiteHelper.COLUMN_WORD_ID,
+            MySQLiteHelper.COLUMN_RESULT,
+            MySQLiteHelper.COLUMN_ADDED_AT
     };
 
     public MyDataSource(Context context) {
@@ -148,6 +155,19 @@ public class MyDataSource {
         values.put(MySQLiteHelper.COLUMN_PERFORMANCE_ID, performanceId);
 
         long insertedId = db.insert(MySQLiteHelper.TABLE_WORD_PERFORMANCE, null, values);
+
+        if (insertedId != 0) return true;
+        else return false;
+
+    }
+
+    public boolean createPlayingLog(long wordId, int result, long addedAt) {
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_WORD_ID, wordId);
+        values.put(MySQLiteHelper.COLUMN_RESULT, result);
+        values.put(MySQLiteHelper.COLUMN_ADDED_AT, addedAt);
+
+        long insertedId = db.insert(MySQLiteHelper.TABLE_PLAYING_LOG, null, values);
 
         if (insertedId != 0) return true;
         else return false;
@@ -338,8 +358,29 @@ public class MyDataSource {
         return detailedWords;
     }
 
+    public List<PlayingLog> getPlayingLog(long wordId) {
+        List<PlayingLog> log = new ArrayList<>();
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_PLAYING_LOG, playingLogColumns,
+                MySQLiteHelper.COLUMN_WORD_ID + " = " + wordId, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return null;
+        }
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            log.add(cursorToPlayingLog(cursor));
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return log;
+    }
+
 
     /** --------------- CURSOR TO --------------- **/
+
     public User cursorToUser(Cursor cursor) {
         User user = new User();
         user.setId(cursor.getLong(0));
@@ -373,6 +414,15 @@ public class MyDataSource {
         performance.setCorrect(cursor.getInt(1));
         performance.setIncorrect(cursor.getInt(2));
         return performance;
+    }
+
+    public PlayingLog cursorToPlayingLog(Cursor cursor) {
+        PlayingLog playingLog = new PlayingLog();
+        playingLog.setId(cursor.getLong(0));
+        playingLog.setWordId(cursor.getLong(1));
+        playingLog.setResult(cursor.getInt(2));
+        playingLog.setAddedAt(cursor.getLong(3));
+        return playingLog;
     }
 
 

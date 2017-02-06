@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.rodri.vocabbuilder.R;
+
 /**
  * Created by rodri on 1/31/2017.
  */
@@ -17,6 +19,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     // Database version
     private static final int DATABASE_VERSION = 1;
 
+    // Extra
+    private String[] languages;
+
     // Table names
     public static final String TABLE_USER = "user";
     public static final String TABLE_WORD = "word";
@@ -25,6 +30,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_WORD_LANGUAGE = "word_language";
     public static final String TABLE_PERFORMANCE = "performance";
     public static final String TABLE_WORD_PERFORMANCE = "word_performance";
+    public static final String TABLE_PLAYING_LOG = "playing_log";
 
     // Common column names
     public static final String KEY_ID = "id";
@@ -56,10 +62,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     // WordPerformance: column names { word_id, ... }
     public static final String COLUMN_PERFORMANCE_ID = "performance_id";
 
-    // WordDateAdded: column names { word_id, ... }
-    public static final String COLUMN_DAY = "day";
-    public static final String COLUMN_MONTH = "month";
-    public static final String COLUMN_YEAR = "year";
+    // PlayingLog: column names { id, word_id, added_at, ... }
+    public static final String COLUMN_RESULT = "result";
 
 
     /** -------------- CREATE TABLES -------------- **/
@@ -115,9 +119,18 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + "FOREIGN KEY (" + COLUMN_WORD_ID + ") REFERENCES " + TABLE_WORD + " (" + KEY_ID + "), "
             + "FOREIGN KEY (" + COLUMN_PERFORMANCE_ID + ") REFERENCES " + TABLE_PERFORMANCE + " (" + KEY_ID + "));";
 
+    public static final String CREATE_TABLE_PLAYING_LOG =
+            "CREATE TABLE " + TABLE_PLAYING_LOG + " ("
+            + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_WORD_ID + " INTEGER NOT NULL, "
+            + COLUMN_RESULT + " INTEGER NOT NULL, "
+            + COLUMN_ADDED_AT + " INTEGER NOT NULL, "
+            + "FOREIGN KEY (" + COLUMN_WORD_ID + ") REFERENCES " + TABLE_WORD + " (" + KEY_ID + "));";
+
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        languages = context.getResources().getStringArray(R.array.languages);
     }
 
     @Override
@@ -129,6 +142,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_WORD_LANGUAGE);
         db.execSQL(CREATE_TABLE_PERFORMANCE);
         db.execSQL(CREATE_TABLE_WORD_PERFORMANCE);
+        db.execSQL(CREATE_TABLE_PLAYING_LOG);
+        insertLanguages(db);
     }
 
     @Override
@@ -138,6 +153,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
         if (newVersion > oldVersion) {
             // Do something
+        }
+    }
+
+    private void insertLanguages(SQLiteDatabase db) {
+        for (int i = 0; i < languages.length; i++) {
+            db.execSQL("INSERT INTO " + TABLE_LANGUAGE + " VALUES ("+ (i+1) + ", '" + languages[i] + "');");
         }
     }
 }

@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         iniViews();
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         TypedArray tabsIcons = getResources().obtainTypedArray(R.array.tab_icons);
         getTabsIconId(tabsIcons);
@@ -64,4 +64,5 @@ public class MainActivity extends AppCompatActivity {
             tabsIconsId[i] = tabsIcons.getResourceId(i, 0);
         }
     }
+
 }

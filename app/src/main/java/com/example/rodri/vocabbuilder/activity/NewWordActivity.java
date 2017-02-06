@@ -1,5 +1,6 @@
 package com.example.rodri.vocabbuilder.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -109,6 +110,7 @@ public class NewWordActivity extends AppCompatActivity {
                     if (inserted1 && inserted2 && inserted3) {
                         String message = getString(R.string.toast_new_word_created);
                         Toast.makeText(NewWordActivity.this, message, Toast.LENGTH_SHORT).show();
+                        setResult(Activity.RESULT_OK);
                         finish();
                     } else {
                         String message = getString(R.string.toast_something_went_wrong);
