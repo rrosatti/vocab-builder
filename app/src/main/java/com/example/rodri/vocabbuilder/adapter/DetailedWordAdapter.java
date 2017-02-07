@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rodri.vocabbuilder.R;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
@@ -30,6 +31,7 @@ public class DetailedWordAdapter extends RecyclerView.Adapter<DetailedWordAdapte
         public ImageView imgFlag;
         public TextView txtWord;
         public TextView txtTranslation;
+        public long wordId;
 
         public MyViewHolder(View v) {
             super(v);
@@ -37,6 +39,13 @@ public class DetailedWordAdapter extends RecyclerView.Adapter<DetailedWordAdapte
             imgFlag = (ImageView) v.findViewById(R.id.listItemWord_imgFlag);
             txtWord = (TextView) v.findViewById(R.id.listItemWord_txtWord);
             txtTranslation = (TextView) v.findViewById(R.id.listItemWord_txtTranslation);
+
+            v.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return true;
+                }
+            });
         }
     }
 
@@ -60,6 +69,7 @@ public class DetailedWordAdapter extends RecyclerView.Adapter<DetailedWordAdapte
 
         int flagId = (int) detailedWord.getLanguage().getId();
         holder.imgFlag.setImageResource(flags.getResourceId(flagId-1, 0));
+        holder.wordId = detailedWord.getWord().getId();
 
         holder.txtWord.setText(detailedWord.getWord().getName());
         holder.txtTranslation.setText(detailedWord.getWord().getTranslation1());
