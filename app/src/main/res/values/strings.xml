@@ -15,6 +15,7 @@
     <string name="button_sign_up">Sign Up</string>
     <string name="button_confirm">Confirm</string>
     <string name="button_cancel">Cancel</string>
+    <string name="button_play">Play</string>
 
     <!-- Toast -->
     <string name="toast_login_failed">username or password are incorrect!</string>
@@ -70,5 +71,6 @@
     <string name="text_correct">Correct: %1$d</string>
     <string name="text_incorrect">Incorrect: %1$d</string>
     <string name="text_last_5_games_label">Last 5 games: </string>
+    <string name="text_number_of_words">Number of Words</string>
     
 </resources>
