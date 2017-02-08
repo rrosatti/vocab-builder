@@ -64,5 +64,11 @@
         <item>@drawable/statistics_white</item>
         <item>@drawable/settings_white</item>
     </array>
+
+    <!-- TextView -->
+    <string name="text_total_plays">Total plays: %1$d</string>
+    <string name="text_correct">Correct: %1$d</string>
+    <string name="text_incorrect">Incorrect: %1$d</string>
+    <string name="text_last_5_games_label">Last 5 games: </string>
     
 </resources>

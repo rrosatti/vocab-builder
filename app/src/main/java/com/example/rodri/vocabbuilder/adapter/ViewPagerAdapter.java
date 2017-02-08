@@ -73,7 +73,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
 
-        //return Titles[position];
+        //return Titles[pos];
         Drawable image = ContextCompat.getDrawable(activity, imageResId[position]);
         image.setBounds(0, 0, 60, 60);
         SpannableString sb = new SpannableString(" ");

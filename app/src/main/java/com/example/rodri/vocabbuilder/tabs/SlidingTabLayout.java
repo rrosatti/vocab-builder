@@ -44,7 +44,7 @@ import com.example.rodri.vocabbuilder.R;
  * The colors can be customized in two ways. The first and simplest is to provide an array of colors
  * via {@link #setSelectedIndicatorColors(int...)}. The
  * alternative is via the {@link TabColorizer} interface which provides you complete control over
- * which color is used for any individual position.
+ * which color is used for any individual pos.
  * <p>
  * The views used as tabs can be customized by calling {@link #setCustomTabView(int, int)},
  * providing the layout ID of your custom layout.
@@ -57,7 +57,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
     public interface TabColorizer {
 
         /**
-         * @return return the color of the indicator used when {@code position} is selected.
+         * @return return the color of the indicator used when {@code pos} is selected.
          */
         int getIndicatorColor(int position);
 
@@ -127,7 +127,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
     /**
      * Set the {@link ViewPager.OnPageChangeListener}. When using {@link SlidingTabLayout} you are
      * required to set any {@link ViewPager.OnPageChangeListener} through this method. This is so
-     * that the layout can update it's scroll position correctly.
+     * that the layout can update it's scroll pos correctly.
      *
      * @see ViewPager#setOnPageChangeListener(ViewPager.OnPageChangeListener)
      */

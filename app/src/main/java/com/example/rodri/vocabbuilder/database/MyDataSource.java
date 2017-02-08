@@ -178,12 +178,12 @@ public class MyDataSource {
     /**
      * getUser (userId)
      * getUser (username, password)
-     * getWord (wordId)
+     * getWord (pos)
      * getWordId (userId)
      * getLanguage (languageId)
-     * getLanguageId (wordId)
+     * getLanguageId (pos)
      * getPerformance (performanceId)
-     * getPerformanceId (wordId)
+     * getPerformanceId (pos)
      */
 
     public User getUser(long userId) {
@@ -362,6 +362,26 @@ public class MyDataSource {
         List<PlayingLog> log = new ArrayList<>();
         Cursor cursor = db.query(MySQLiteHelper.TABLE_PLAYING_LOG, playingLogColumns,
                 MySQLiteHelper.COLUMN_WORD_ID + " = " + wordId, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return null;
+        }
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            log.add(cursorToPlayingLog(cursor));
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return log;
+    }
+
+    public List<PlayingLog> getPlayingLog(long wordId, int limit) {
+        List<PlayingLog> log = new ArrayList<>();
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_PLAYING_LOG, playingLogColumns,
+                MySQLiteHelper.COLUMN_WORD_ID + " = " + wordId, null, null, null, null, String.valueOf(limit));
 
         if (isCursorEmpty(cursor)) {
             cursor.close();
