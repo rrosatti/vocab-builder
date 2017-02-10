@@ -1,5 +1,6 @@
 package com.example.rodri.vocabbuilder.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.rodri.vocabbuilder.R;
+import com.example.rodri.vocabbuilder.activity.FlashcardGameActivity;
 
 /**
  * Created by rodri on 2/4/2017.
@@ -79,7 +81,9 @@ public class PracticeFragment extends Fragment {
         btPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Num of words: " + numOfWords, Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getActivity(), FlashcardGameActivity.class);
+                i.putExtra("numOfWords", numOfWords);
+                getActivity().startActivity(i);
             }
         });
 
