@@ -379,6 +379,28 @@ public class MyDataSource {
         return detailedWords;
     }
 
+    public List<Long> getDetailedWordsIds(long userId, int limit) {
+        List<Long> wordsIds = new ArrayList<>();
+
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_USER_WORD, userWordColumns,
+                MySQLiteHelper.COLUMN_USER_ID + " = " + userId, null, null, null, null, String.valueOf(limit));
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return null;
+        }
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            long wordId = getDetailedWord(cursor.getLong(1)).getWord().getId();
+            wordsIds.add(wordId);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return wordsIds;
+    }
+
 
     public List<PlayingLog> getPlayingLog(long wordId) {
         List<PlayingLog> log = new ArrayList<>();

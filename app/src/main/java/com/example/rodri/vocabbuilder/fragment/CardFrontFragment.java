@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.rodri.vocabbuilder.R;
+import com.example.rodri.vocabbuilder.model.DetailedWord;
 
 /**
  * Created by rodri on 2/9/2017.
@@ -15,6 +16,8 @@ import com.example.rodri.vocabbuilder.R;
 
 public class CardFrontFragment extends Fragment {
 
+    private DetailedWord dWord;
+    private long wordId;
 
     @Nullable
     @Override
