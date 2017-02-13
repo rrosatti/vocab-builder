@@ -61,7 +61,7 @@ public class FlashcardGameActivity extends AppCompatActivity {
             words = dataSource.getDetailedWords(userId, numOfWords);
             wordsIds = dataSource.getDetailedWordsIds(userId, numOfWords);
 
-            cardAdapter = new CardPagerAdapter(getSupportFragmentManager(), wordsIds);
+            cardAdapter = new CardPagerAdapter(getFragmentManager(), wordsIds);
 
             dataSource.close();
         } catch (Exception e) {

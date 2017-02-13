@@ -1,9 +1,9 @@
 package com.example.rodri.vocabbuilder.adapter;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.support.v13.app.FragmentPagerAdapter;
 
 import com.example.rodri.vocabbuilder.fragment.CardContainerFragment;
 
@@ -30,7 +30,7 @@ public class CardPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         long wordId = wordsIds.get(position);
-        Fragment cardContainerFragment = new CardContainerFragment();
+        Fragment cardContainerFragment =  new CardContainerFragment();
         Bundle args = new Bundle();
         args.putLong("wordId", wordId);
         cardContainerFragment.setArguments(args);
@@ -38,7 +38,6 @@ public class CardPagerAdapter extends FragmentPagerAdapter {
         return cardContainerFragment;
     }
 
-    // return the size of the list of detailed words
     @Override
     public int getCount() {
         return wordsIds.size();

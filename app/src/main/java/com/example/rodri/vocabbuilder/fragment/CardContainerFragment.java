@@ -2,7 +2,7 @@ package com.example.rodri.vocabbuilder.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.AnimatorRes;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,15 +27,18 @@ public class CardContainerFragment extends Fragment {
         iniViews(rootView);
         wordId = getArguments().getLong("wordId");
 
-        Fragment cardFront = new CardFrontFragment();
-        Bundle args = new Bundle();
-        args.putLong("wordId", wordId);
-        cardFront.setArguments(args);
+        if (savedInstanceState == null) {
+            Fragment cardFront = new CardFrontFragment();
+            Bundle args = new Bundle();
+            args.putLong("wordId", wordId);
+            cardFront.setArguments(args);
 
-        getChildFragmentManager()
-                .beginTransaction().
-                add(R.id.fragmentCardContainer_container, cardFront)
-                .commit();
+            getChildFragmentManager()
+                    .beginTransaction().
+                    add(R.id.fragmentCardContainer_container, cardFront)
+                    .commit();
+
+        }
 
         return rootView;
     }
@@ -68,7 +71,7 @@ public class CardContainerFragment extends Fragment {
             newFragment.setArguments(args);
         }
 
-        getFragmentManager()
+        getChildFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.animator.card_flip_right_in,
                         R.animator.card_flip_right_out,
@@ -77,7 +80,7 @@ public class CardContainerFragment extends Fragment {
                 .replace(R.id.fragmentCardContainer_container, newFragment)
                 .commit();
 
-        // The problem might be because of the getSupportFragmentManager() in FlashcardGameActivity
+        // The problem might be because of the getSupportFragmentManager() in FlashcardGameActivity+
 
         flipped = !flipped;
     }
