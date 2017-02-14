@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.rodri.vocabbuilder.R;
 
@@ -25,22 +26,29 @@ public class CardContainerFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_card_container, container, false);
 
         iniViews(rootView);
-        wordId = getArguments().getLong("wordId");
+        //wordId = getArguments().getLong("wordId");
 
-        if (savedInstanceState == null) {
-            Fragment cardFront = new CardFrontFragment();
-            Bundle args = new Bundle();
-            args.putLong("wordId", wordId);
-            cardFront.setArguments(args);
-
-            getChildFragmentManager()
-                    .beginTransaction().
-                    add(R.id.fragmentCardContainer_container, cardFront)
-                    .commit();
-
-        }
 
         return rootView;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        wordId = getArguments().getLong("wordId");
+
+        Fragment cardFront = new CardFrontFragment();
+        Bundle args = new Bundle();
+        args.putLong("wordId", wordId);
+        cardFront.setArguments(args);
+
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentCardContainer_container, cardFront, "fragmentFront")
+                .commit();
+
+
     }
 
     @Override
@@ -60,15 +68,19 @@ public class CardContainerFragment extends Fragment {
     }
 
     private void flipCard() {
+
         Fragment newFragment;
+        String tag;
         Bundle args = new Bundle();
         args.putLong("wordId", wordId);
         if (flipped) {
             newFragment = new CardFrontFragment();
             newFragment.setArguments(args);
+            tag = "fragmentFront";
         } else {
             newFragment = new CardBackFragment();
             newFragment.setArguments(args);
+            tag = "fragmentBack";
         }
 
         getChildFragmentManager()
@@ -77,11 +89,15 @@ public class CardContainerFragment extends Fragment {
                         R.animator.card_flip_right_out,
                         R.animator.card_flip_left_in,
                         R.animator.card_flip_left_out)
-                .replace(R.id.fragmentCardContainer_container, newFragment)
+                .replace(R.id.fragmentCardContainer_container, newFragment, tag)
                 .commit();
 
-        // The problem might be because of the getSupportFragmentManager() in FlashcardGameActivity+
 
         flipped = !flipped;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Toast.makeText(getActivity(), "saveInstanceState()", Toast.LENGTH_SHORT).show();
     }
 }
