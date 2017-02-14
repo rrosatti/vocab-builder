@@ -1,16 +1,18 @@
 package com.example.rodri.vocabbuilder.activity;
 
+import android.content.ComponentName;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.FrameLayout;
 
 import com.example.rodri.vocabbuilder.R;
 import com.example.rodri.vocabbuilder.adapter.CardPagerAdapter;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
 import com.example.rodri.vocabbuilder.model.Login;
+import com.example.rodri.vocabbuilder.service.GameProgressService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.List;
  * Created by rodri on 2/9/2017.
  */
 
-public class FlashcardGameActivity extends AppCompatActivity {
+public class FlashcardActivity extends AppCompatActivity {
 
     private ViewPager pager;
     private int numOfWords;
@@ -27,11 +29,12 @@ public class FlashcardGameActivity extends AppCompatActivity {
     private List<Long> wordsIds = new ArrayList<>();
     private CardPagerAdapter cardAdapter;
     private MyDataSource dataSource;
+    private GameProgressService.IGameProgressService mService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_flashcard_game);
+        setContentView(R.layout.activity_flashcard);
 
         iniViews();
         dataSource = new MyDataSource(this);
@@ -46,7 +49,16 @@ public class FlashcardGameActivity extends AppCompatActivity {
         //      3.1 - create a new fragment passing the wordId as an argument?
         // 4 - save the result of each card
         // 5 - when finished, show a result screen
+
+        mService.StartGameProgress(wordsIds);
+
     }
+
+    private GameProgressService mConnection = new GameProgressService() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            mService = (IGameProgressService) service;
+        }
+    };
 
     private void iniViews() {
         pager = (ViewPager) findViewById(R.id.activityFlashCardGame_pager);

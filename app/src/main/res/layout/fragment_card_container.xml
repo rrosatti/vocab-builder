@@ -12,10 +12,11 @@
         android:id="@+id/fragmentCardContainer_btShowAnswer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/button_show_answer"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/button_show_answer"
+        android:background="@android:color/transparent"/>
 
 
 </RelativeLayout>

@@ -26,8 +26,6 @@ public class CardContainerFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_card_container, container, false);
 
         iniViews(rootView);
-        //wordId = getArguments().getLong("wordId");
-
 
         return rootView;
     }
@@ -65,6 +63,10 @@ public class CardContainerFragment extends Fragment {
 
     private void iniViews(View v) {
         btShowAnswer = (ImageButton) v.findViewById(R.id.fragmentCardContainer_btShowAnswer);
+
+        if (flipped) {
+            btShowAnswer.setImageResource(R.drawable.back);
+        }
     }
 
     private void flipCard() {
@@ -77,10 +79,14 @@ public class CardContainerFragment extends Fragment {
             newFragment = new CardFrontFragment();
             newFragment.setArguments(args);
             tag = "fragmentFront";
+            btShowAnswer.setImageBitmap(null);
+            btShowAnswer.setImageResource(R.drawable.button_show_answer);
         } else {
             newFragment = new CardBackFragment();
             newFragment.setArguments(args);
             tag = "fragmentBack";
+            btShowAnswer.setImageBitmap(null);
+            btShowAnswer.setImageResource(R.drawable.back);
         }
 
         getChildFragmentManager()

@@ -10,10 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.example.rodri.vocabbuilder.R;
-import com.example.rodri.vocabbuilder.activity.FlashcardGameActivity;
+import com.example.rodri.vocabbuilder.activity.FlashcardActivity;
 
 /**
  * Created by rodri on 2/4/2017.
@@ -81,7 +80,7 @@ public class PracticeFragment extends Fragment {
         btPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), FlashcardGameActivity.class);
+                Intent i = new Intent(getActivity(), FlashcardActivity.class);
                 i.putExtra("numOfWords", numOfWords);
                 getActivity().startActivity(i);
             }

@@ -80,6 +80,5 @@ public class CardBackFragment extends Fragment {
             txtTrans3.setText(w.getTranslation3());
             txtTrans3.setVisibility(View.VISIBLE);
         }
-
     }
 }
