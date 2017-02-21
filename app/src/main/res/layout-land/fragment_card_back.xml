@@ -64,7 +64,7 @@
                 android:layout_marginTop="30dp">
 
                 <ImageButton
-                    android:id="@+id/fragmentCardBack_btCorrect"
+                    android:id="@+id/fragmentCardBack_btIncorrect"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:src="@drawable/button_incorrect"
@@ -72,7 +72,7 @@
                     android:background="@android:color/transparent"/>
 
                 <ImageButton
-                    android:id="@+id/fragmentCardBack_btIncorrect"
+                    android:id="@+id/fragmentCardBack_btCorrect"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:src="@drawable/button_correct"

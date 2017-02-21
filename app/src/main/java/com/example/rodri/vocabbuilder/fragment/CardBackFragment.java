@@ -6,10 +6,12 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.rodri.vocabbuilder.R;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
+import com.example.rodri.vocabbuilder.interfaces.OnSetWordResult;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
 import com.example.rodri.vocabbuilder.model.Word;
 
@@ -22,6 +24,8 @@ public class CardBackFragment extends Fragment {
     private TextView txtTrans1;
     private TextView txtTrans2;
     private TextView txtTrans3;
+    private ImageButton btCorrect;
+    private ImageButton btIncorrect;
     private long wordId;
     private MyDataSource dataSource;
     private DetailedWord dWord;
@@ -44,12 +48,28 @@ public class CardBackFragment extends Fragment {
         getWord();
         fillViews();
 
+        btCorrect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(1);
+            }
+        });
+
+        btIncorrect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(0);
+            }
+        });
+
     }
 
     private void iniViews(View v) {
         txtTrans1 = (TextView) v.findViewById(R.id.fragmentCardBack_txtTrans1);
         txtTrans2 = (TextView) v.findViewById(R.id.fragmentCardBack_txtTrans2);
         txtTrans3 = (TextView) v.findViewById(R.id.fragmentCardBack_txtTrans3);
+        btCorrect = (ImageButton) v.findViewById(R.id.fragmentCardBack_btCorrect);
+        btIncorrect = (ImageButton) v.findViewById(R.id.fragmentCardBack_btIncorrect);
     }
 
     private void getWord() {
@@ -79,6 +99,14 @@ public class CardBackFragment extends Fragment {
         if (!w.getTranslation3().isEmpty()) {
             txtTrans3.setText(w.getTranslation3());
             txtTrans3.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setResult(int result) {
+        try {
+            ((OnSetWordResult) getActivity()).setWordResult(wordId, result);
+        } catch (ClassCastException cce) {
+            cce.printStackTrace();
         }
     }
 }

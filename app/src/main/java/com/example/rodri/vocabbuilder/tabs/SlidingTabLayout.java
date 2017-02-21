@@ -43,7 +43,7 @@ import com.example.rodri.vocabbuilder.R;
  * <p>
  * The colors can be customized in two ways. The first and simplest is to provide an array of colors
  * via {@link #setSelectedIndicatorColors(int...)}. The
- * alternative is via the {@link TabColorizer} interface which provides you complete control over
+ * alternative is via the {@link TabColorizer} interfaces which provides you complete control over
  * which color is used for any individual pos.
  * <p>
  * The views used as tabs can be customized by calling {@link #setCustomTabView(int, int)},

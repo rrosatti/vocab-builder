@@ -9,11 +9,14 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.example.rodri.vocabbuilder.R;
 import com.example.rodri.vocabbuilder.adapter.CardPagerAdapter;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
+import com.example.rodri.vocabbuilder.interfaces.OnSetWordResult;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
+import com.example.rodri.vocabbuilder.model.GameProgress;
 import com.example.rodri.vocabbuilder.model.Login;
 import com.example.rodri.vocabbuilder.service.GameProgressService;
 
@@ -24,7 +27,7 @@ import java.util.List;
  * Created by rodri on 2/9/2017.
  */
 
-public class FlashcardActivity extends AppCompatActivity {
+public class FlashcardActivity extends AppCompatActivity implements OnSetWordResult{
 
     private ViewPager pager;
     private int numOfWords;
@@ -34,6 +37,7 @@ public class FlashcardActivity extends AppCompatActivity {
     private MyDataSource dataSource;
     private GameProgressService mGameProgressService;
     private boolean mServiceBound = false;
+    private GameProgress gameProgress;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +50,7 @@ public class FlashcardActivity extends AppCompatActivity {
 
         getWords();
         pager.setAdapter(cardAdapter);
+        gameProgress = new GameProgress(wordsIds);
 
         // 1 - get num of words
         // 2 - get the X words to be played with
@@ -55,7 +60,7 @@ public class FlashcardActivity extends AppCompatActivity {
         // 5 - when finished, show a result screen
 
     }
-
+/**
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -89,7 +94,7 @@ public class FlashcardActivity extends AppCompatActivity {
             unbindService(mServiceConnection);
             mServiceBound = false;
         }
-    }
+    }*/
 
     private void iniViews() {
         pager = (ViewPager) findViewById(R.id.activityFlashCardGame_pager);
@@ -112,5 +117,11 @@ public class FlashcardActivity extends AppCompatActivity {
             dataSource.close();
         }
 
+    }
+
+    @Override
+    public void setWordResult(long wordId, int result) {
+        gameProgress.setResult(wordId, result);
+        Toast.makeText(this, "wordId: " + wordId + " result: " + result, Toast.LENGTH_SHORT).show();
     }
 }
