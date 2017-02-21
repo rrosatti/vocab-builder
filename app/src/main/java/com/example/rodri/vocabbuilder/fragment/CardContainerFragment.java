@@ -20,6 +20,7 @@ public class CardContainerFragment extends Fragment {
     private long wordId;
     private ImageButton btShowAnswer;
     private boolean flipped = false;
+    private boolean isResultFragment = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,10 +42,22 @@ public class CardContainerFragment extends Fragment {
         args.putLong("wordId", wordId);
         cardFront.setArguments(args);
 
-        getChildFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentCardContainer_container, cardFront, "fragmentFront")
-                .commit();
+        if (wordId == -1) {
+            // Result Fragment
+            CardResultFragment resultFragment = new CardResultFragment();
+            getChildFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentCardContainer_container, resultFragment, "resultFragment")
+                    .commit();
+            isResultFragment = true;
+
+        } else {
+            getChildFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentCardContainer_container, cardFront, "fragmentFront")
+                    .commit();
+            isResultFragment = false;
+        }
 
 
     }
@@ -66,6 +79,12 @@ public class CardContainerFragment extends Fragment {
 
         if (flipped) {
             btShowAnswer.setImageResource(R.drawable.back);
+        }
+
+        if (isResultFragment) {
+            btShowAnswer.setVisibility(View.GONE);
+        } else {
+            btShowAnswer.setVisibility(View.VISIBLE);
         }
     }
 

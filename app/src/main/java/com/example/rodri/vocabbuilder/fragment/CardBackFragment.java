@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.rodri.vocabbuilder.R;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
-import com.example.rodri.vocabbuilder.interfaces.OnSetWordResult;
+import com.example.rodri.vocabbuilder.interfaces.IFlashCardInterface;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
 import com.example.rodri.vocabbuilder.model.Word;
 
@@ -104,7 +104,7 @@ public class CardBackFragment extends Fragment {
 
     private void setResult(int result) {
         try {
-            ((OnSetWordResult) getActivity()).setWordResult(wordId, result);
+            ((IFlashCardInterface) getActivity()).setWordResult(wordId, result);
         } catch (ClassCastException cce) {
             cce.printStackTrace();
         }

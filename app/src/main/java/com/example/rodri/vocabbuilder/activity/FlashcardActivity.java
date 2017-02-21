@@ -1,11 +1,6 @@
 package com.example.rodri.vocabbuilder.activity;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +9,7 @@ import android.widget.Toast;
 import com.example.rodri.vocabbuilder.R;
 import com.example.rodri.vocabbuilder.adapter.CardPagerAdapter;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
-import com.example.rodri.vocabbuilder.interfaces.OnSetWordResult;
+import com.example.rodri.vocabbuilder.interfaces.IFlashCardInterface;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
 import com.example.rodri.vocabbuilder.model.GameProgress;
 import com.example.rodri.vocabbuilder.model.Login;
@@ -27,7 +22,7 @@ import java.util.List;
  * Created by rodri on 2/9/2017.
  */
 
-public class FlashcardActivity extends AppCompatActivity implements OnSetWordResult{
+public class FlashcardActivity extends AppCompatActivity implements IFlashCardInterface {
 
     private ViewPager pager;
     private int numOfWords;
@@ -108,6 +103,7 @@ public class FlashcardActivity extends AppCompatActivity implements OnSetWordRes
             // need to implement a method to get only the words that NEED to be practiced (special algorithm)
             words = dataSource.getDetailedWords(userId, numOfWords);
             wordsIds = dataSource.getDetailedWordsIds(userId, numOfWords);
+            wordsIds.add((long)-1); // it corresponds to the result fragment
 
             cardAdapter = new CardPagerAdapter(getFragmentManager(), wordsIds);
 
@@ -123,5 +119,13 @@ public class FlashcardActivity extends AppCompatActivity implements OnSetWordRes
     public void setWordResult(long wordId, int result) {
         gameProgress.setResult(wordId, result);
         Toast.makeText(this, "wordId: " + wordId + " result: " + result, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showResult() {
+        // ask "finish flashcard game?"
+        // if yes, then open a new activity showing the results (then finish this one)
+        //      - pass the gameProgress variable to the new activity?
+        gameProgress.calculateResult();
     }
 }

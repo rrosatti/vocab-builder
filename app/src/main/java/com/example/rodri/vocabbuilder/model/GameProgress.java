@@ -4,6 +4,7 @@ import android.util.Log;
 import android.util.SparseIntArray;
 import android.util.SparseLongArray;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.List;
  * Created by rodri on 2/14/2017.
  */
 
-public class GameProgress {
+public class GameProgress implements Serializable{
 
     private int numOfWords;
     private List<Long> wordsIds;

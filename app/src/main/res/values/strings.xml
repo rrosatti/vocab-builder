@@ -16,6 +16,7 @@
     <string name="button_confirm">Confirm</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_play">Play</string>
+    <string name="button_result">Result</string>
 
     <!-- Toast -->
     <string name="toast_login_failed">username or password are incorrect!</string>
