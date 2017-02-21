@@ -1,6 +1,9 @@
 package com.example.rodri.vocabbuilder.activity;
 
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -29,7 +32,8 @@ public class FlashcardActivity extends AppCompatActivity {
     private List<Long> wordsIds = new ArrayList<>();
     private CardPagerAdapter cardAdapter;
     private MyDataSource dataSource;
-    private GameProgressService.IGameProgressService mService;
+    private GameProgressService mGameProgressService;
+    private boolean mServiceBound = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,15 +54,42 @@ public class FlashcardActivity extends AppCompatActivity {
         // 4 - save the result of each card
         // 5 - when finished, show a result screen
 
-        mService.StartGameProgress(wordsIds);
+    }
+
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            GameProgressService.MyBinder myBinder = (GameProgressService.MyBinder) service;
+            mGameProgressService = myBinder.getService();
+            mServiceBound = true;
+
+
+            mGameProgressService.initializeGameProgress(wordsIds);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mServiceBound = false;
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(this, GameProgressService.class);
+        startService(intent);
+        bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
 
     }
 
-    private GameProgressService mConnection = new GameProgressService() {
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            mService = (IGameProgressService) service;
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mServiceBound) {
+            unbindService(mServiceConnection);
+            mServiceBound = false;
         }
-    };
+    }
 
     private void iniViews() {
         pager = (ViewPager) findViewById(R.id.activityFlashCardGame_pager);

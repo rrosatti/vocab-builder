@@ -1,5 +1,6 @@
 package com.example.rodri.vocabbuilder.model;
 
+import android.util.Log;
 import android.util.SparseIntArray;
 import android.util.SparseLongArray;
 
@@ -27,6 +28,10 @@ public class GameProgress {
     }
 
     public GameProgress(List<Long> wordsIds) {
+        setWordsIds(wordsIds);
+    }
+
+    public void setWordsIds(List<Long> wordsIds) {
         this.numOfWords = wordsIds.size();
         this.wordsIds = wordsIds;
         initializeResults();

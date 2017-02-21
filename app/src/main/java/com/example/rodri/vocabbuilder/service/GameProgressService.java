@@ -19,43 +19,50 @@ import java.util.List;
 public class GameProgressService extends Service {
 
     private GameProgress gameProgress;
-
-    public interface IGameProgressService {
-        public void StartGameProgress(List<Long> wordsIds);
-    }
-
-    public class LocalBinder extends Binder implements IGameProgressService{
-        GameProgressService getService() {
-            return GameProgressService.this;
-        }
-
-        @Override
-        public void StartGameProgress(List<Long> wordsIds) {
-            gameProgress = new GameProgress(wordsIds);
-        }
-    }
+    private static String LOG_TAG = "GameProgressService";
+    private IBinder mBinder = new MyBinder();
 
     @Override
     public void onCreate() {
-        Toast.makeText(this, "onCreate() was called", Toast.LENGTH_SHORT).show();
+        super.onCreate();
+        Log.v(LOG_TAG, "in onCreate");
+        gameProgress = new GameProgress();
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("GameProgressService", "Received start id " + startId + ": " + intent);
-        return START_NOT_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        Toast.makeText(this, "onDestroy() was called", Toast.LENGTH_SHORT).show();
-    }
-
-    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        Log.v(LOG_TAG, "in onBind");
         return mBinder;
     }
 
-    private final IBinder mBinder = new LocalBinder();
+    @Override
+    public void onRebind(Intent intent) {
+        Log.v(LOG_TAG, "in onRebind");
+        super.onRebind(intent);
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        Log.v(LOG_TAG, "in onUnbind");
+        return super.onUnbind(intent);
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        Log.v(LOG_TAG, "in onDestroy");
+        // do something?
+    }
+
+    public class MyBinder extends Binder {
+        public GameProgressService getService() {
+            return GameProgressService.this;
+        }
+    }
+
+    public void initializeGameProgress(List<Long> wordsIds) {
+        Log.v(LOG_TAG, "in initializeGameProgress");
+        gameProgress.setWordsIds(wordsIds);
+
+    }
+
 }
