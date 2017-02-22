@@ -502,6 +502,35 @@ public class MyDataSource {
     }
 
 
+    /** --------------- UPDATE --------------- **/
+
+    public boolean updatePerformance(long wordId, int result) {
+        ContentValues values = new ContentValues();
+        long performanceId = getPerformanceId(wordId);
+        Performance performance = getPerformance(performanceId);
+
+        if (result == 0) {
+            performance.incrementIncorrect();
+        } else {
+            performance.incrementCorrect();
+        }
+
+        values.put(MySQLiteHelper.COLUMN_CORRECT, performance.getCorrect());
+        values.put(MySQLiteHelper.COLUMN_INCORRECT, performance.getIncorrect());
+
+        int affectedRows = db.update(MySQLiteHelper.TABLE_PERFORMANCE, values,
+                MySQLiteHelper.KEY_ID + " = " + performanceId, null);
+
+        if (affectedRows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
+
     /** --------------- OTHER --------------- **/
 
     private boolean isCursorEmpty(Cursor cursor) {

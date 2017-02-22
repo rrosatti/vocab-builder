@@ -20,6 +20,7 @@
         <activity android:name=".activity.SignUpActivity" />
         <activity android:name=".activity.NewWordActivity" />
         <activity android:name=".activity.FlashcardActivity" />
+        <activity android:name=".activity.FlashCardResultActivity" />
 
         <service android:name=".service.GameProgressService" />
 

@@ -17,6 +17,7 @@ import com.example.rodri.vocabbuilder.model.Login;
 import com.example.rodri.vocabbuilder.service.GameProgressService;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -45,8 +46,12 @@ public class FlashcardActivity extends AppCompatActivity implements IFlashCardIn
         numOfWords = getIntent().getExtras().getInt("numOfWords", 5);
 
         getWords();
-        pager.setAdapter(cardAdapter);
         gameProgress = new GameProgress(wordsIds);
+
+        wordsIds.add((long)-1); // it corresponds to the result fragment
+        cardAdapter = new CardPagerAdapter(getFragmentManager(), wordsIds);
+        pager.setAdapter(cardAdapter);
+
 
         // 1 - get num of words
         // 2 - get the X words to be played with
@@ -104,9 +109,6 @@ public class FlashcardActivity extends AppCompatActivity implements IFlashCardIn
             // need to implement a method to get only the words that NEED to be practiced (special algorithm)
             words = dataSource.getDetailedWords(userId, numOfWords);
             wordsIds = dataSource.getDetailedWordsIds(userId, numOfWords);
-            wordsIds.add((long)-1); // it corresponds to the result fragment
-
-            cardAdapter = new CardPagerAdapter(getFragmentManager(), wordsIds);
 
             dataSource.close();
         } catch (Exception e) {
@@ -124,13 +126,42 @@ public class FlashcardActivity extends AppCompatActivity implements IFlashCardIn
 
     @Override
     public void showResult() {
-        // ask "finish flashcard game?"
-        // if yes, then open a new activity showing the results (then finish this one)
-        //      - pass the gameProgress variable to the new activity?
         gameProgress.calculateResult();
-        Intent i = new Intent(FlashcardActivity.this, FlashCardResultActivity.class);
-        i.putExtra("gameProgress", gameProgress);
-        startActivity(i);
-        finish();
+        boolean saved = saveDataToDatabase();
+
+        if (saved) {
+            Intent i = new Intent(FlashcardActivity.this, FlashCardResultActivity.class);
+            i.putExtra("gameProgress", gameProgress);
+            startActivity(i);
+            finish();
+        } else {
+            Toast.makeText(this, R.string.toast_something_went_wrong, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean saveDataToDatabase() {
+        try {
+            dataSource.open();
+
+            wordsIds.remove((long)-1);
+            for (int i=0; i<wordsIds.size(); i++) {
+                long wordId = wordsIds.get(i);
+                dataSource.updatePerformance(wordId, gameProgress.getWordResult(wordId));
+                dataSource.createPlayingLog(wordId, gameProgress.getWordResult(wordId), getDate());
+            }
+
+            dataSource.close();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            dataSource.close();
+            return false;
+        }
+    }
+
+    private long getDate() {
+        Calendar cal = Calendar.getInstance();
+        return cal.getTimeInMillis();
     }
 }

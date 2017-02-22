@@ -41,4 +41,12 @@ public class Performance {
     public int getIncorrect() {
         return incorrect;
     }
+
+    public void incrementCorrect() {
+        correct++;
+    }
+
+    public void incrementIncorrect() {
+        incorrect++;
+    }
 }

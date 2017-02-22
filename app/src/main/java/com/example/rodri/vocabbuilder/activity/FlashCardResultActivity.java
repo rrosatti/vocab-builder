@@ -4,17 +4,17 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rodri.vocabbuilder.R;
+import com.example.rodri.vocabbuilder.adapter.FlashCardResultAdapter;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
 import com.example.rodri.vocabbuilder.model.GameProgress;
-import com.example.rodri.vocabbuilder.model.Login;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -30,11 +30,12 @@ public class FlashCardResultActivity extends AppCompatActivity {
     private MyDataSource dataSource;
     private GameProgress gameProgress;
     private List<DetailedWord> detailedWordList;
+    private FlashCardResultAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_falshcard_result);
+        setContentView(R.layout.activity_flashcard_result);
 
         iniViews();
         dataSource = new MyDataSource(this);
@@ -72,6 +73,11 @@ public class FlashCardResultActivity extends AppCompatActivity {
         txtIncorrect.setText(incorrect);
 
         detailedWordList = getDetailedWords(gameProgress.getWordsIds());
+        adapter = new FlashCardResultAdapter(this, detailedWordList, gameProgress);
+
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        listOfWords.setLayoutManager(llm);
+        listOfWords.setAdapter(adapter);
     }
 
     private List<DetailedWord> getDetailedWords(List<Long> wordsIds) {
@@ -79,7 +85,6 @@ public class FlashCardResultActivity extends AppCompatActivity {
         try {
             dataSource.open();
 
-            long userId = Login.getInstance().getUserId();
             tempDetailedWordList = dataSource.getDetailedWords(wordsIds);
 
             dataSource.close();

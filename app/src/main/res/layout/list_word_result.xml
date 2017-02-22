@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/listWordResult_imgFlag"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/listWordResult_txtWord"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"/>
+
+    <!--<View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#000"
+        android:layout_margin="5dp"/>-->
+
+    <TextView
+        android:id="@+id/listWordResult_txtTrans"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"/>
+
+    <ImageView
+        android:id="@+id/listWordResult_imgResult"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"/>
+
+</LinearLayout>
