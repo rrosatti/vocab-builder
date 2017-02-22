@@ -379,6 +379,18 @@ public class MyDataSource {
         return detailedWords;
     }
 
+    public List<DetailedWord> getDetailedWords(List<Long> wordsIds) {
+        List<DetailedWord> detailedWords = new ArrayList<>();
+        for (int i=0; i<wordsIds.size(); i++) {
+            DetailedWord dWord = getDetailedWord(wordsIds.get(i));
+            if (dWord != null) {
+                detailedWords.add(dWord);
+            }
+        }
+
+        return detailedWords;
+    }
+
     public List<Long> getDetailedWordsIds(long userId, int limit) {
         List<Long> wordsIds = new ArrayList<>();
 

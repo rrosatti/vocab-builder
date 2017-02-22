@@ -73,4 +73,8 @@ public class GameProgress implements Serializable{
     public int getNumIncorrect() {
         return numIncorrect;
     }
+
+    public int getNumOfWords() { return numOfWords; }
+
+    public List<Long> getWordsIds() { return wordsIds; }
 }

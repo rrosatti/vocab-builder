@@ -1,5 +1,6 @@
 package com.example.rodri.vocabbuilder.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -127,5 +128,9 @@ public class FlashcardActivity extends AppCompatActivity implements IFlashCardIn
         // if yes, then open a new activity showing the results (then finish this one)
         //      - pass the gameProgress variable to the new activity?
         gameProgress.calculateResult();
+        Intent i = new Intent(FlashcardActivity.this, FlashCardResultActivity.class);
+        i.putExtra("gameProgress", gameProgress);
+        startActivity(i);
+        finish();
     }
 }

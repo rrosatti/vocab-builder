@@ -73,5 +73,6 @@
     <string name="text_incorrect">Incorrect: %1$d</string>
     <string name="text_last_5_games_label">Last 5 games: </string>
     <string name="text_number_of_words">Number of Words</string>
+    <string name="text_total_words">Total words: %1$d</string>
     
 </resources>
