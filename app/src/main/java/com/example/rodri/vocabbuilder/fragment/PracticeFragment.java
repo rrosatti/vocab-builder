@@ -1,5 +1,6 @@
 package com.example.rodri.vocabbuilder.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -98,4 +99,5 @@ public class PracticeFragment extends Fragment {
         rbt30 = (RadioButton) v.findViewById(R.id.tabPractice_rbt_30);
         btPlay = (Button) v.findViewById(R.id.tabPractice_btPlay);
     }
+
 }

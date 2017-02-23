@@ -30,7 +30,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_WORD_LANGUAGE = "word_language";
     public static final String TABLE_PERFORMANCE = "performance";
     public static final String TABLE_WORD_PERFORMANCE = "word_performance";
-    public static final String TABLE_PLAYING_LOG = "playing_log";
+    public static final String TABLE_GAME_LOG = "game_log";
+    public static final String TABLE_GAME = "game";
+    public static final String TABLE_USER_GAME = "user_game";
 
     // Common column names
     public static final String KEY_ID = "id";
@@ -62,8 +64,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     // WordPerformance: column names { word_id, ... }
     public static final String COLUMN_PERFORMANCE_ID = "performance_id";
 
-    // PlayingLog: column names { id, word_id, added_at, ... }
+    // GameLog: column names { id, word_id, added_at, ... }
     public static final String COLUMN_RESULT = "result";
+
+    // Game: column names { id, correct, incorrect, added_at, ... }
+    public static final String COLUMN_NUM_WORDS = "num_words";
+
+    // UserGame: column names { user_id, ... }
+    public static final String COLUMN_GAME_ID = "game_id";
 
 
     /** -------------- CREATE TABLES -------------- **/
@@ -119,12 +127,29 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + "FOREIGN KEY (" + COLUMN_WORD_ID + ") REFERENCES " + TABLE_WORD + " (" + KEY_ID + "), "
             + "FOREIGN KEY (" + COLUMN_PERFORMANCE_ID + ") REFERENCES " + TABLE_PERFORMANCE + " (" + KEY_ID + "));";
 
-    public static final String CREATE_TABLE_PLAYING_LOG =
-            "CREATE TABLE " + TABLE_PLAYING_LOG + " ("
+    public static final String CREATE_TABLE_GAME =
+            "CREATE TABLE " + TABLE_GAME + " ("
             + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_NUM_WORDS + " INTEGER NOT NULL, "
+            + COLUMN_CORRECT + " INTEGER NOT NULL, "
+            + COLUMN_INCORRECT + " INTEGER NOT NULL, "
+            + COLUMN_ADDED_AT + " INTEGER NOT NULL);";
+
+    public static final String CREATE_TABLE_USER_GAME =
+            "CREATE TABLE " + TABLE_USER_GAME + " ("
+            + COLUMN_USER_ID + " INTEGER NOT NULL, "
+            + COLUMN_GAME_ID + " INTEGER NOT NULL, "
+            + "PRIMARY KEY (" + COLUMN_USER_ID + ", " + COLUMN_GAME_ID + "), "
+            + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + " (" + KEY_ID + "), "
+            + "FOREIGN KEY (" + COLUMN_GAME_ID + ") REFERENCES " + TABLE_GAME + " (" + KEY_ID + "));";
+
+    public static final String CREATE_TABLE_GAME_LOG =
+            "CREATE TABLE " + TABLE_GAME_LOG + " ("
+            + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_GAME_ID + " INTEGER NOT NULL,"
             + COLUMN_WORD_ID + " INTEGER NOT NULL, "
             + COLUMN_RESULT + " INTEGER NOT NULL, "
-            + COLUMN_ADDED_AT + " INTEGER NOT NULL, "
+            + "FOREIGN KEY (" + COLUMN_GAME_ID + ") REFERENCES " + TABLE_GAME + " (" + KEY_ID + "), "
             + "FOREIGN KEY (" + COLUMN_WORD_ID + ") REFERENCES " + TABLE_WORD + " (" + KEY_ID + "));";
 
 
@@ -142,7 +167,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_WORD_LANGUAGE);
         db.execSQL(CREATE_TABLE_PERFORMANCE);
         db.execSQL(CREATE_TABLE_WORD_PERFORMANCE);
-        db.execSQL(CREATE_TABLE_PLAYING_LOG);
+        db.execSQL(CREATE_TABLE_GAME);
+        db.execSQL(CREATE_TABLE_USER_GAME);
+        db.execSQL(CREATE_TABLE_GAME_LOG);
         insertLanguages(db);
     }
 

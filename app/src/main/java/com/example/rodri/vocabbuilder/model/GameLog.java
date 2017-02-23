@@ -4,20 +4,20 @@ package com.example.rodri.vocabbuilder.model;
  * Created by rodri on 2/6/2017.
  */
 
-public class PlayingLog {
+public class GameLog {
 
     private long id;
+    private long gameId;
     private long wordId;
     private int result;
-    private long addedAt;
 
-    public PlayingLog() {}
+    public GameLog() {}
 
-    public PlayingLog(long id, long wordId, int result, long addedAt) {
+    public GameLog(long id, long gameId, long wordId, int result) {
         this.id = id;
+        this.gameId = gameId;
         this.wordId = wordId;
         this.result = result;
-        this.addedAt = addedAt;
     }
 
     public long getId() {
@@ -44,11 +44,11 @@ public class PlayingLog {
         this.result = result;
     }
 
-    public long getAddedAt() {
-        return addedAt;
+    public void setGameId(long gameId) {
+        this.gameId = gameId;
     }
 
-    public void setAddedAt(long addedAt) {
-        this.addedAt = addedAt;
+    public long getGameId() {
+        return gameId;
     }
 }

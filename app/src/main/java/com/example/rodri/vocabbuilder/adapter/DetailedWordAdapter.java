@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.example.rodri.vocabbuilder.R;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
-import com.example.rodri.vocabbuilder.model.PlayingLog;
+import com.example.rodri.vocabbuilder.model.GameLog;
 import com.example.rodri.vocabbuilder.model.Word;
 
 import java.util.List;
@@ -177,7 +177,7 @@ public class DetailedWordAdapter extends RecyclerView.Adapter<DetailedWordAdapte
         try {
             dataSource.open();
 
-            List<PlayingLog> latestGames = dataSource.getPlayingLog(wordId, 5);
+            List<GameLog> latestGames = dataSource.getGameLog(wordId, 5);
 
             if (latestGames != null) {
                 String last5Games = "";

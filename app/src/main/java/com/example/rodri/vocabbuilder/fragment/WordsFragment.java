@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ public class WordsFragment extends Fragment {
     private MyDataSource dataSource;
     private List<DetailedWord> words = new ArrayList<>();
     private DetailedWordAdapter adapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Nullable
     @Override
@@ -57,6 +59,17 @@ public class WordsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                getDataFromDatabase();
+                listOfWords.setAdapter(adapter);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimaryDark, R.color.colorPrimary);
+
         btNewWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +83,7 @@ public class WordsFragment extends Fragment {
     private void iniViews(View v) {
         listOfWords = (RecyclerView) v.findViewById(R.id.tabWords_listWords);
         btNewWord = (FloatingActionButton) v.findViewById(R.id.tabWords_btNewWord);
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.tabWords_swipeContainer);
     }
 
     private void getDataFromDatabase() {
@@ -101,4 +115,5 @@ public class WordsFragment extends Fragment {
             }
         }
     }
+
 }

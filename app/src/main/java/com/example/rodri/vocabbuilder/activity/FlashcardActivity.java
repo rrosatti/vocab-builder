@@ -1,5 +1,6 @@
 package com.example.rodri.vocabbuilder.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -133,6 +134,7 @@ public class FlashcardActivity extends AppCompatActivity implements IFlashCardIn
             Intent i = new Intent(FlashcardActivity.this, FlashCardResultActivity.class);
             i.putExtra("gameProgress", gameProgress);
             startActivity(i);
+            setResult(Activity.RESULT_OK);
             finish();
         } else {
             Toast.makeText(this, R.string.toast_something_went_wrong, Toast.LENGTH_SHORT).show();
@@ -147,7 +149,7 @@ public class FlashcardActivity extends AppCompatActivity implements IFlashCardIn
             for (int i=0; i<wordsIds.size(); i++) {
                 long wordId = wordsIds.get(i);
                 dataSource.updatePerformance(wordId, gameProgress.getWordResult(wordId));
-                dataSource.createPlayingLog(wordId, gameProgress.getWordResult(wordId), getDate());
+                dataSource.createGameLog(wordId, gameProgress.getWordResult(wordId), getDate());
             }
 
             dataSource.close();

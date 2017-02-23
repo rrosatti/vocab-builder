@@ -7,12 +7,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.rodri.vocabbuilder.model.DetailedWord;
+import com.example.rodri.vocabbuilder.model.Game;
 import com.example.rodri.vocabbuilder.model.Language;
 import com.example.rodri.vocabbuilder.model.Performance;
-import com.example.rodri.vocabbuilder.model.PlayingLog;
+import com.example.rodri.vocabbuilder.model.GameLog;
 import com.example.rodri.vocabbuilder.model.User;
 import com.example.rodri.vocabbuilder.model.Word;
-import com.example.rodri.vocabbuilder.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,12 +60,26 @@ public class MyDataSource {
             MySQLiteHelper.COLUMN_WORD_ID,
             MySQLiteHelper.COLUMN_PERFORMANCE_ID
     };
-    private String[] playingLogColumns = {
+    private String[] gameLogColumns = {
             MySQLiteHelper.KEY_ID,
+            MySQLiteHelper.COLUMN_GAME_ID,
             MySQLiteHelper.COLUMN_WORD_ID,
-            MySQLiteHelper.COLUMN_RESULT,
+            MySQLiteHelper.COLUMN_RESULT
+    };
+
+    private String[] gameColumns = {
+            MySQLiteHelper.KEY_ID,
+            MySQLiteHelper.COLUMN_NUM_WORDS,
+            MySQLiteHelper.COLUMN_CORRECT,
+            MySQLiteHelper.COLUMN_INCORRECT,
             MySQLiteHelper.COLUMN_ADDED_AT
     };
+
+    private String[] userGameColumns = {
+            MySQLiteHelper.COLUMN_USER_ID,
+            MySQLiteHelper.COLUMN_GAME_ID
+    };
+
 
     public MyDataSource(Context context) {
         helper = new MySQLiteHelper(context);
@@ -161,17 +175,40 @@ public class MyDataSource {
 
     }
 
-    public boolean createPlayingLog(long wordId, int result, long addedAt) {
+    public boolean createGameLog(long gameId, long wordId, int result) {
         ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_GAME_ID, gameId);
         values.put(MySQLiteHelper.COLUMN_WORD_ID, wordId);
         values.put(MySQLiteHelper.COLUMN_RESULT, result);
-        values.put(MySQLiteHelper.COLUMN_ADDED_AT, addedAt);
 
-        long insertedId = db.insert(MySQLiteHelper.TABLE_PLAYING_LOG, null, values);
+        long insertedId = db.insert(MySQLiteHelper.TABLE_GAME_LOG, null, values);
 
         if (insertedId != 0) return true;
         else return false;
 
+    }
+
+    public long createGame(int numWords, int correct, int incorrect, long addedAt) {
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_NUM_WORDS, numWords);
+        values.put(MySQLiteHelper.COLUMN_CORRECT, correct);
+        values.put(MySQLiteHelper.COLUMN_INCORRECT, incorrect);
+        values.put(MySQLiteHelper.COLUMN_ADDED_AT, addedAt);
+
+        // row ID, otherwise 0
+        return db.insert(MySQLiteHelper.TABLE_GAME, null, values);
+
+    }
+
+    public boolean createUserGame(long userId, long gameId) {
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_USER_ID, userId);
+        values.put(MySQLiteHelper.COLUMN_GAME_ID, gameId);
+
+        long insertedId = db.insert(MySQLiteHelper.TABLE_USER_GAME, null, values);
+
+        if (insertedId != 0) return true;
+        else return false;
     }
 
     /** --------------- GET --------------- **/
@@ -414,9 +451,9 @@ public class MyDataSource {
     }
 
 
-    public List<PlayingLog> getPlayingLog(long wordId) {
-        List<PlayingLog> log = new ArrayList<>();
-        Cursor cursor = db.query(MySQLiteHelper.TABLE_PLAYING_LOG, playingLogColumns,
+    public List<GameLog> getGameLog(long wordId) {
+        List<GameLog> log = new ArrayList<>();
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_GAME_LOG, gameLogColumns,
                 MySQLiteHelper.COLUMN_WORD_ID + " = " + wordId, null, null, null, null, null);
 
         if (isCursorEmpty(cursor)) {
@@ -426,7 +463,7 @@ public class MyDataSource {
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
-            log.add(cursorToPlayingLog(cursor));
+            log.add(cursorToGameLog(cursor));
             cursor.moveToNext();
         }
 
@@ -434,9 +471,9 @@ public class MyDataSource {
         return log;
     }
 
-    public List<PlayingLog> getPlayingLog(long wordId, int limit) {
-        List<PlayingLog> log = new ArrayList<>();
-        Cursor cursor = db.query(MySQLiteHelper.TABLE_PLAYING_LOG, playingLogColumns,
+    public List<GameLog> getGameLog(long wordId, int limit) {
+        List<GameLog> log = new ArrayList<>();
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_GAME_LOG, gameLogColumns,
                 MySQLiteHelper.COLUMN_WORD_ID + " = " + wordId, null, null, null, null, String.valueOf(limit));
 
         if (isCursorEmpty(cursor)) {
@@ -446,7 +483,7 @@ public class MyDataSource {
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
-            log.add(cursorToPlayingLog(cursor));
+            log.add(cursorToGameLog(cursor));
             cursor.moveToNext();
         }
 
@@ -454,6 +491,41 @@ public class MyDataSource {
         return log;
     }
 
+    public List<GameLog> getGameLogByGameId(long gameId) {
+        List<GameLog> log = new ArrayList<>();
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_GAME_LOG, gameLogColumns,
+                MySQLiteHelper.COLUMN_GAME_ID + " = " + gameId, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return null;
+        }
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            log.add(cursorToGameLog(cursor));
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return log;
+    }
+
+    public Game getGame(long gameId) {
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_GAME, gameColumns,
+                MySQLiteHelper.KEY_ID + " = " + gameId, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return null;
+        }
+
+        cursor.moveToFirst();
+        Game game = cursorToGame(cursor);
+        cursor.close();
+
+        return game;
+    }
 
     /** --------------- CURSOR TO --------------- **/
 
@@ -492,15 +564,24 @@ public class MyDataSource {
         return performance;
     }
 
-    public PlayingLog cursorToPlayingLog(Cursor cursor) {
-        PlayingLog playingLog = new PlayingLog();
-        playingLog.setId(cursor.getLong(0));
-        playingLog.setWordId(cursor.getLong(1));
-        playingLog.setResult(cursor.getInt(2));
-        playingLog.setAddedAt(cursor.getLong(3));
-        return playingLog;
+    public GameLog cursorToGameLog(Cursor cursor) {
+        GameLog gameLog = new GameLog();
+        gameLog.setId(cursor.getLong(0));
+        gameLog.setGameId(cursor.getLong(1));
+        gameLog.setWordId(cursor.getLong(2));
+        gameLog.setResult(cursor.getInt(3));
+        return gameLog;
     }
 
+    public Game cursorToGame(Cursor cursor) {
+        Game game = new Game();
+        game.setId(cursor.getLong(0));
+        game.setNumWords(cursor.getInt(1));
+        game.setCorrect(cursor.getInt(2));
+        game.setIncorrect(cursor.getInt(3));
+        game.setAddedAt(cursor.getLong(4));
+        return game;
+    }
 
     /** --------------- UPDATE --------------- **/
 
