@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.rodri.vocabbuilder.R;
@@ -145,11 +146,17 @@ public class FlashcardActivity extends AppCompatActivity implements IFlashCardIn
         try {
             dataSource.open();
 
-            wordsIds.remove((long)-1);
+            wordsIds.remove((long)-1); // remove the element referring to the result fragment
+
+            long userId = Login.getInstance().getUserId();
+            long gameId = dataSource.createGame(numOfWords, gameProgress.getNumCorrect(),
+                    gameProgress.getNumIncorrect(), getDate());
+            dataSource.createUserGame(userId, gameId);
+
             for (int i=0; i<wordsIds.size(); i++) {
                 long wordId = wordsIds.get(i);
                 dataSource.updatePerformance(wordId, gameProgress.getWordResult(wordId));
-                dataSource.createGameLog(wordId, gameProgress.getWordResult(wordId), getDate());
+                dataSource.createGameLog(gameId, wordId, gameProgress.getWordResult(wordId));
             }
 
             dataSource.close();
