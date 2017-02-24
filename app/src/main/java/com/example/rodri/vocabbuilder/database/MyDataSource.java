@@ -471,29 +471,41 @@ public class MyDataSource {
         return log;
     }
 
+    /**
+     * Get the most recently played games for the given word
+     * @param wordId
+     * @param limit
+     * @return
+     */
     public List<GameLog> getMostRecentlyGames(long wordId, int limit) {
         List<GameLog> log = new ArrayList<>();
 
-        // Get the most recently played games for the given word
-        Cursor cursor2 = db.rawQuery("SELECT * FROM " + MySQLiteHelper.TABLE_GAME_LOG +
+        /**
+         * SELECT * FROM game_log gl
+                INNER JOIN game g ON g.id = gl.game_id
+                    WHERE gl.word_id = x
+                    ORDER BY g.added_at DESC
+                    LIMIT y
+         */
+        Cursor cursor = db.rawQuery("SELECT * FROM " + MySQLiteHelper.TABLE_GAME_LOG +
                 " gl INNER JOIN " + MySQLiteHelper.TABLE_GAME + " g ON " +
                 "g." + MySQLiteHelper.KEY_ID + " = gl." + MySQLiteHelper.COLUMN_GAME_ID +
                 " WHERE gl." + MySQLiteHelper.COLUMN_WORD_ID + " = " + wordId +
                 " ORDER BY g." + MySQLiteHelper.COLUMN_ADDED_AT + " DESC " +
                 "LIMIT " + limit, null);
 
-        if (isCursorEmpty(cursor2)) {
-            cursor2.close();
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
             return null;
         }
-        cursor2.moveToFirst();
+        cursor.moveToFirst();
 
-        while (!cursor2.isAfterLast()) {
-            log.add(cursorToGameLog(cursor2));
-            cursor2.moveToNext();
+        while (!cursor.isAfterLast()) {
+            log.add(cursorToGameLog(cursor));
+            cursor.moveToNext();
         }
 
-        cursor2.close();
+        cursor.close();
         return log;
     }
 
