@@ -451,7 +451,7 @@ public class MyDataSource {
     }
 
 
-    public List<GameLog> getGameLog(long wordId) {
+    public List<GameLog> getMostRecentlyGames(long wordId) {
         List<GameLog> log = new ArrayList<>();
         Cursor cursor = db.query(MySQLiteHelper.TABLE_GAME_LOG, gameLogColumns,
                 MySQLiteHelper.COLUMN_WORD_ID + " = " + wordId, null, null, null, null, null);
@@ -471,23 +471,29 @@ public class MyDataSource {
         return log;
     }
 
-    public List<GameLog> getGameLog(long wordId, int limit) {
+    public List<GameLog> getMostRecentlyGames(long wordId, int limit) {
         List<GameLog> log = new ArrayList<>();
-        Cursor cursor = db.query(MySQLiteHelper.TABLE_GAME_LOG, gameLogColumns,
-                MySQLiteHelper.COLUMN_WORD_ID + " = " + wordId, null, null, null, null, String.valueOf(limit));
 
-        if (isCursorEmpty(cursor)) {
-            cursor.close();
+        // Get the most recently played games for the given word
+        Cursor cursor2 = db.rawQuery("SELECT * FROM " + MySQLiteHelper.TABLE_GAME_LOG +
+                " gl INNER JOIN " + MySQLiteHelper.TABLE_GAME + " g ON " +
+                "g." + MySQLiteHelper.KEY_ID + " = gl." + MySQLiteHelper.COLUMN_GAME_ID +
+                " WHERE gl." + MySQLiteHelper.COLUMN_WORD_ID + " = " + wordId +
+                " ORDER BY g." + MySQLiteHelper.COLUMN_ADDED_AT + " DESC " +
+                "LIMIT " + limit, null);
+
+        if (isCursorEmpty(cursor2)) {
+            cursor2.close();
             return null;
         }
-        cursor.moveToFirst();
+        cursor2.moveToFirst();
 
-        while (!cursor.isAfterLast()) {
-            log.add(cursorToGameLog(cursor));
-            cursor.moveToNext();
+        while (!cursor2.isAfterLast()) {
+            log.add(cursorToGameLog(cursor2));
+            cursor2.moveToNext();
         }
 
-        cursor.close();
+        cursor2.close();
         return log;
     }
 

@@ -177,7 +177,7 @@ public class DetailedWordAdapter extends RecyclerView.Adapter<DetailedWordAdapte
         try {
             dataSource.open();
 
-            List<GameLog> latestGames = dataSource.getGameLog(wordId, 5);
+            List<GameLog> latestGames = dataSource.getMostRecentlyGames(wordId, 5);
 
             if (latestGames != null) {
                 String last5Games = "";

@@ -30,7 +30,6 @@ public class FlashcardActivity extends AppCompatActivity implements IFlashCardIn
 
     private ViewPager pager;
     private int numOfWords;
-    private List<DetailedWord> words = new ArrayList<>();
     private List<Long> wordsIds = new ArrayList<>();
     private CardPagerAdapter cardAdapter;
     private MyDataSource dataSource;
@@ -47,12 +46,18 @@ public class FlashcardActivity extends AppCompatActivity implements IFlashCardIn
         dataSource = new MyDataSource(this);
         numOfWords = getIntent().getExtras().getInt("numOfWords", 5);
 
-        getWords();
-        gameProgress = new GameProgress(wordsIds);
+        wordsIds = getWords();
 
-        wordsIds.add((long)-1); // it corresponds to the result fragment
-        cardAdapter = new CardPagerAdapter(getFragmentManager(), wordsIds);
-        pager.setAdapter(cardAdapter);
+        if (wordsIds != null) {
+            gameProgress = new GameProgress(wordsIds);
+
+            wordsIds.add((long)-1); // it corresponds to the result fragment
+            cardAdapter = new CardPagerAdapter(getFragmentManager(), wordsIds);
+            pager.setAdapter(cardAdapter);
+        } else {
+            Toast.makeText(this, R.string.toast_something_went_wrong, Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
 
         // 1 - get num of words
@@ -103,19 +108,17 @@ public class FlashcardActivity extends AppCompatActivity implements IFlashCardIn
         pager = (ViewPager) findViewById(R.id.activityFlashCardGame_pager);
     }
 
-    private void getWords() {
+    private List<Long> getWords() {
         try {
             dataSource.open();
 
             long userId = Login.getInstance().getUserId();
-            // need to implement a method to get only the words that NEED to be practiced (special algorithm)
-            words = dataSource.getDetailedWords(userId, numOfWords);
-            wordsIds = dataSource.getDetailedWordsIds(userId, numOfWords);
+            return dataSource.getDetailedWordsIds(userId, numOfWords);
 
-            dataSource.close();
         } catch (Exception e) {
             e.printStackTrace();
             dataSource.close();
+            return null;
         }
 
     }

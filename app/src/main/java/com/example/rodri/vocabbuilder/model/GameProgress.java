@@ -31,6 +31,7 @@ public class GameProgress implements Serializable{
     }
 
     public GameProgress(List<Long> wordsIds) {
+        game = new Game();
         setWordsIds(wordsIds);
     }
 

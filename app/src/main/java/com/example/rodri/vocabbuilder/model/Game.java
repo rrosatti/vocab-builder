@@ -1,10 +1,12 @@
 package com.example.rodri.vocabbuilder.model;
 
+import java.io.Serializable;
+
 /**
  * Created by rodri on 2/23/2017.
  */
 
-public class Game {
+public class Game implements Serializable {
 
     private long id;
     private int numWords;
