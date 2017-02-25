@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content" android:paddingBottom="5dp">
+
+    <TextView
+        android:id="@+id/listItemGame_txtTotalWords"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="10"
+        android:layout_weight="1"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/listItemGame_txtCorrect"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="7"
+        android:layout_weight="2"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/listItemGame_txtIncorrect"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="3"
+        android:layout_weight="2"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:id="@+id/listItemGame_txtDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="25/02/2017"
+        android:layout_weight="2"
+        android:textAlignment="textEnd"/>
+
+</LinearLayout>
