@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.rodri.vocabbuilder.R;
-import com.example.rodri.vocabbuilder.adapter.SimpleListAdapter;
+import com.example.rodri.vocabbuilder.adapter.StatisticsOptionsAdapter;
 import com.example.rodri.vocabbuilder.other.SimpleDividerItemDecorator;
 
 import java.util.Arrays;
@@ -24,7 +24,7 @@ public class StatisticsFragment extends Fragment {
 
     private RecyclerView listOfStatisticsOptions;
     private List<String> listOptions;
-    private SimpleListAdapter adapter;
+    private StatisticsOptionsAdapter adapter;
 
     @Nullable
     @Override
@@ -39,7 +39,7 @@ public class StatisticsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         listOptions = Arrays.asList(getActivity().getResources().getStringArray(R.array.statistics_list));
-        adapter = new SimpleListAdapter(getActivity(), listOptions);
+        adapter = new StatisticsOptionsAdapter(getActivity(), listOptions);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         listOfStatisticsOptions.setLayoutManager(llm);

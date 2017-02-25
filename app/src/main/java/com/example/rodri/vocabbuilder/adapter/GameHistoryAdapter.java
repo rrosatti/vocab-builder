@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.rodri.vocabbuilder.R;
 import com.example.rodri.vocabbuilder.model.Game;
+import com.example.rodri.vocabbuilder.util.DateUtil;
 import com.example.rodri.vocabbuilder.util.Util;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class GameHistoryAdapter extends RecyclerView.Adapter<GameHistoryAdapter.
 
     private Activity activity;
     private List<Game> games;
-    private Util util = new Util();
+    private DateUtil dateUtil = new DateUtil();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -69,7 +70,7 @@ public class GameHistoryAdapter extends RecyclerView.Adapter<GameHistoryAdapter.
     }
 
     private String getDate(long time) {
-        int[] dateArray = util.fromMillisecondsToSeparateDate(time);
-        return dateArray[0] + "/" + dateArray[1] + "/" + dateArray[2];
+        int[] dateArray = dateUtil.fromMillisecondsToSeparateDate(time);
+        return dateUtil.toStringDate(dateArray[0], dateArray[1], dateArray[2]);
     }
 }

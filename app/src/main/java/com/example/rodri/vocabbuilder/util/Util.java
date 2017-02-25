@@ -15,27 +15,4 @@ public class Util {
         return (editText.getText().toString().isEmpty());
     }
 
-    public long fromDateToMilliseconds(int day, int month, int year) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(day, month - 1, year);
-
-        return cal.getTimeInMillis();
-    }
-
-    public Date fromMillisecondsToDate(long time) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(time);
-
-        return cal.getTime();
-    }
-
-    public int[] fromMillisecondsToSeparateDate(long time) {
-        int[] dateArray = new int[3];
-        Date date = fromMillisecondsToDate(time);
-        dateArray[0] = date.getDay();
-        dateArray[1] = date.getMonth() + 1;
-        dateArray[3] = date.getYear();
-
-        return dateArray;
-    }
 }

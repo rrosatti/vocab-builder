@@ -545,6 +545,26 @@ public class MyDataSource {
         return game;
     }
 
+    public List<Game> getGames(long userId) {
+        List<Game> games = new ArrayList<>();
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_USER_GAME, userGameColumns,
+                MySQLiteHelper.COLUMN_USER_ID + " = " + userId, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return null;
+        }
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            games.add(getGame(cursor.getLong(1)));
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return games;
+    }
+
     /** --------------- CURSOR TO --------------- **/
 
     public User cursorToUser(Cursor cursor) {

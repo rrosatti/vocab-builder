@@ -152,7 +152,7 @@ public class FlashcardActivity extends AppCompatActivity implements IFlashCardIn
             wordsIds.remove((long)-1); // remove the element referring to the result fragment
 
             long userId = Login.getInstance().getUserId();
-            long gameId = dataSource.createGame(numOfWords, gameProgress.getNumCorrect(),
+            long gameId = dataSource.createGame(gameProgress.getNumOfWords(), gameProgress.getNumCorrect(),
                     gameProgress.getNumIncorrect(), getDate());
             dataSource.createUserGame(userId, gameId);
 
