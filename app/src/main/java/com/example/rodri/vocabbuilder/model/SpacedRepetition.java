@@ -9,12 +9,12 @@ public class SpacedRepetition {
     private long id;
     private int stage;
     private int cycle;
-    private int last_review;
-    private int next_review;
+    private long last_review;
+    private long next_review;
 
     public SpacedRepetition() {}
 
-    public SpacedRepetition(long id, int stage, int cycle, int last_review, int next_review) {
+    public SpacedRepetition(long id, int stage, int cycle, long last_review, long next_review) {
         this.id = id;
         this.stage = stage;
         this.cycle = cycle;
@@ -46,19 +46,19 @@ public class SpacedRepetition {
         this.cycle = cycle;
     }
 
-    public int getLast_review() {
+    public long getLast_review() {
         return last_review;
     }
 
-    public void setLast_review(int last_review) {
+    public void setLast_review(long last_review) {
         this.last_review = last_review;
     }
 
-    public int getNext_review() {
+    public long getNext_review() {
         return next_review;
     }
 
-    public void setNext_review(int next_review) {
+    public void setNext_review(long next_review) {
         this.next_review = next_review;
     }
 }

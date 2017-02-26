@@ -1,7 +1,6 @@
 package com.example.rodri.vocabbuilder.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -103,7 +102,7 @@ public class NewWordActivity extends AppCompatActivity {
                 long userId = Login.getInstance().getUserId();
                 long wordId = dataSource.createWord(word, trans1, trans2, trans3, getDate());
                 long performanceId = dataSource.createPerformance(0, 0);
-                long spacedRepetitionId = dataSource.createSpacedReptition(dateUtil.getCurrentDate());
+                long spacedRepetitionId = dataSource.createSpacedRepetition(dateUtil.getCurrentDate());
 
                 if (wordId != 0 && performanceId != 0 && spacedRepetitionId != 0) {
                     boolean inserted1 = dataSource.createUserWord(userId, wordId);

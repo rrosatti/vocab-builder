@@ -12,6 +12,7 @@ import com.example.rodri.vocabbuilder.model.Game;
 import com.example.rodri.vocabbuilder.model.Language;
 import com.example.rodri.vocabbuilder.model.Performance;
 import com.example.rodri.vocabbuilder.model.GameLog;
+import com.example.rodri.vocabbuilder.model.SpacedRepetition;
 import com.example.rodri.vocabbuilder.model.User;
 import com.example.rodri.vocabbuilder.model.Word;
 import com.example.rodri.vocabbuilder.util.DateUtil;
@@ -222,12 +223,12 @@ public class MyDataSource {
         else return false;
     }
 
-    public long createSpacedReptition(int lastReview) {
+    public long createSpacedRepetition(long lastReview) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_STAGE, 1);
         values.put(MySQLiteHelper.COLUMN_CYCLE, 1);
         values.put(MySQLiteHelper.COLUMN_LAST_REVIEW, lastReview);
-        values.put(MySQLiteHelper.COLUMN_NEXT_REVIEW, dateUtil.plus1Day(lastReview));
+        values.put(MySQLiteHelper.COLUMN_NEXT_REVIEW, dateUtil.plusDays(lastReview, 1));
 
         // Inserted row id, otherwise 0
         return db.insert(MySQLiteHelper.TABLE_SPACED_REPETITION, null, values);
@@ -599,6 +600,35 @@ public class MyDataSource {
         return games;
     }
 
+    public SpacedRepetition getSpacedRepetition(long spacedRepetitionId) {
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_SPACED_REPETITION, spacedRepetitionColumns,
+                MySQLiteHelper.KEY_ID + " = " + spacedRepetitionId, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return null;
+        }
+        cursor.moveToFirst();
+
+        SpacedRepetition spacedRepetition = cursorToSpacedRepetition(cursor);
+        cursor.close();
+        return spacedRepetition;
+
+    }
+
+    public long getSpacedRepetitionId(long wordId) {
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_WORD_SPACED_REPETITION, wordSpacedRepetitionColumns,
+                MySQLiteHelper.COLUMN_WORD_ID + " = " + wordId, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return 0;
+        }
+        cursor.moveToFirst();
+
+        return cursor.getLong(1);
+    }
+
     /** --------------- CURSOR TO --------------- **/
 
     public User cursorToUser(Cursor cursor) {
@@ -653,6 +683,16 @@ public class MyDataSource {
         game.setIncorrect(cursor.getInt(3));
         game.setAddedAt(cursor.getLong(4));
         return game;
+    }
+
+    public SpacedRepetition cursorToSpacedRepetition(Cursor cursor) {
+        SpacedRepetition sRepetition = new SpacedRepetition();
+        sRepetition.setId(cursor.getLong(0));
+        sRepetition.setStage(cursor.getInt(1));
+        sRepetition.setCycle(cursor.getInt(2));
+        sRepetition.setLast_review(cursor.getLong(3));
+        sRepetition.setNext_review(cursor.getLong(4));
+        return sRepetition;
     }
 
     /** --------------- UPDATE --------------- **/

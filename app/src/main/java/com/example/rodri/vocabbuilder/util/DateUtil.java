@@ -54,6 +54,17 @@ public class DateUtil {
         return sDay + "/" + sMonth + "/" + sYear;
     }
 
+    public long getCurrentDate() {
+        Calendar cal = Calendar.getInstance();
+        return cal.getTimeInMillis();
+    }
 
-    // plus1Day, plus10Days ...
+    public long plusDays(long currentTime, int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(currentTime);
+        cal.add(Calendar.DATE, days);
+
+        return cal.getTimeInMillis();
+    }
+
 }
