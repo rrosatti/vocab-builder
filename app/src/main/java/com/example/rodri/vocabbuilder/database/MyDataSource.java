@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.mtp.MtpConstants;
 
 import com.example.rodri.vocabbuilder.model.DetailedWord;
 import com.example.rodri.vocabbuilder.model.Game;
@@ -13,6 +14,7 @@ import com.example.rodri.vocabbuilder.model.Performance;
 import com.example.rodri.vocabbuilder.model.GameLog;
 import com.example.rodri.vocabbuilder.model.User;
 import com.example.rodri.vocabbuilder.model.Word;
+import com.example.rodri.vocabbuilder.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ public class MyDataSource {
 
     private SQLiteDatabase db;
     private MySQLiteHelper helper;
+    private DateUtil dateUtil = new DateUtil();
     private String[] userColumns = {
             MySQLiteHelper.KEY_ID,
             MySQLiteHelper.KEY_NAME,
@@ -66,7 +69,6 @@ public class MyDataSource {
             MySQLiteHelper.COLUMN_WORD_ID,
             MySQLiteHelper.COLUMN_RESULT
     };
-
     private String[] gameColumns = {
             MySQLiteHelper.KEY_ID,
             MySQLiteHelper.COLUMN_NUM_WORDS,
@@ -74,12 +76,21 @@ public class MyDataSource {
             MySQLiteHelper.COLUMN_INCORRECT,
             MySQLiteHelper.COLUMN_ADDED_AT
     };
-
     private String[] userGameColumns = {
             MySQLiteHelper.COLUMN_USER_ID,
             MySQLiteHelper.COLUMN_GAME_ID
     };
-
+    private String[] spacedRepetitionColumns = {
+            MySQLiteHelper.KEY_ID,
+            MySQLiteHelper.COLUMN_STAGE,
+            MySQLiteHelper.COLUMN_CYCLE,
+            MySQLiteHelper.COLUMN_LAST_REVIEW,
+            MySQLiteHelper.COLUMN_NEXT_REVIEW
+    };
+    private String[] wordSpacedRepetitionColumns = {
+            MySQLiteHelper.COLUMN_WORD_ID,
+            MySQLiteHelper.COLUMN_SPACED_REPETITION_ID
+    };
 
     public MyDataSource(Context context) {
         helper = new MySQLiteHelper(context);
@@ -206,6 +217,29 @@ public class MyDataSource {
         values.put(MySQLiteHelper.COLUMN_GAME_ID, gameId);
 
         long insertedId = db.insert(MySQLiteHelper.TABLE_USER_GAME, null, values);
+
+        if (insertedId != 0) return true;
+        else return false;
+    }
+
+    public long createSpacedReptition(int lastReview) {
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_STAGE, 1);
+        values.put(MySQLiteHelper.COLUMN_CYCLE, 1);
+        values.put(MySQLiteHelper.COLUMN_LAST_REVIEW, lastReview);
+        values.put(MySQLiteHelper.COLUMN_NEXT_REVIEW, dateUtil.plus1Day(lastReview));
+
+        // Inserted row id, otherwise 0
+        return db.insert(MySQLiteHelper.TABLE_SPACED_REPETITION, null, values);
+
+    }
+
+    public boolean createWordSpacedRepetition(long wordId, long spacedRepetitionId) {
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_WORD_ID, wordId);
+        values.put(MySQLiteHelper.COLUMN_SPACED_REPETITION_ID, spacedRepetitionId);
+
+        long insertedId = db.insert(MySQLiteHelper.TABLE_WORD_SPACED_REPETITION, null, values);
 
         if (insertedId != 0) return true;
         else return false;

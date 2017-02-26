@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.rodri.vocabbuilder.R;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
 import com.example.rodri.vocabbuilder.model.Login;
+import com.example.rodri.vocabbuilder.util.DateUtil;
 import com.example.rodri.vocabbuilder.util.Util;
 
 import java.util.Calendar;
@@ -37,6 +38,7 @@ public class NewWordActivity extends AppCompatActivity {
     private int langSelected = 0;
     private MyDataSource dataSource;
     private Util util = new Util();
+    private DateUtil dateUtil = new DateUtil();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,13 +103,15 @@ public class NewWordActivity extends AppCompatActivity {
                 long userId = Login.getInstance().getUserId();
                 long wordId = dataSource.createWord(word, trans1, trans2, trans3, getDate());
                 long performanceId = dataSource.createPerformance(0, 0);
+                long spacedRepetitionId = dataSource.createSpacedReptition(dateUtil.getCurrentDate());
 
-                if (wordId != 0 && performanceId != 0) {
+                if (wordId != 0 && performanceId != 0 && spacedRepetitionId != 0) {
                     boolean inserted1 = dataSource.createUserWord(userId, wordId);
                     boolean inserted2 = dataSource.createWordLanguage(wordId, langSelected+1);
                     boolean inserted3 = dataSource.createWordPerformance(wordId, performanceId);
+                    boolean inserted4 = dataSource.createWordSpacedRepetition(wordId, spacedRepetitionId);
 
-                    if (inserted1 && inserted2 && inserted3) {
+                    if (inserted1 && inserted2 && inserted3 && inserted4) {
                         String message = getString(R.string.toast_new_word_created);
                         Toast.makeText(NewWordActivity.this, message, Toast.LENGTH_SHORT).show();
                         setResult(Activity.RESULT_OK);

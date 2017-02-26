@@ -33,6 +33,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_GAME_LOG = "game_log";
     public static final String TABLE_GAME = "game";
     public static final String TABLE_USER_GAME = "user_game";
+    public static final String TABLE_SPACED_REPETITION = "spaced_repetition";
+    public static final String TABLE_WORD_SPACED_REPETITION = "word_spaced_repetition";
 
     // Common column names
     public static final String KEY_ID = "id";
@@ -72,6 +74,15 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     // UserGame: column names { user_id, ... }
     public static final String COLUMN_GAME_ID = "game_id";
+
+    // SpacedRepetition: column names { id, ... }
+    public static final String COLUMN_STAGE = "stage";
+    public static final String COLUMN_CYCLE = "cycle";
+    public static final String COLUMN_LAST_REVIEW = "last_review";
+    public static final String COLUMN_NEXT_REVIEW = "next_review";
+
+    // WordSpacedRepetition: column names { word_id, ... }
+    public static final String COLUMN_SPACED_REPETITION_ID = "spaced_repetition";
 
 
     /** -------------- CREATE TABLES -------------- **/
@@ -153,6 +164,22 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + "FOREIGN KEY (" + COLUMN_WORD_ID + ") REFERENCES " + TABLE_WORD + " (" + KEY_ID + "));";
 
 
+    public static final String CREATE_TABLE_SPACED_REPETITION =
+            "CREATE TABLE " + TABLE_SPACED_REPETITION + " ("
+            + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_STAGE + " INTEGER NOT NULL, "
+            + COLUMN_CYCLE + " INTEGER NOT NULL, "
+            + COLUMN_LAST_REVIEW + " INTEGER NOT NULL, "
+            + COLUMN_NEXT_REVIEW + " INTEGER NOT NULL);";
+
+    public static final String CREATE_WORD_SPACED_REPETITION =
+            "CREATE TABLE " + TABLE_WORD_SPACED_REPETITION + " ("
+            + COLUMN_WORD_ID + " INTEGER NOT NULL, "
+            + COLUMN_SPACED_REPETITION_ID + " INTEGER NOT NULL, "
+            + "PRIMARY KEY (" + COLUMN_WORD_ID + ", " + COLUMN_SPACED_REPETITION_ID + "), "
+            + "FOREIGN KEY (" + COLUMN_WORD_ID + ") REFERENCES " + TABLE_WORD + " (" + KEY_ID + "), "
+            + "FOREIGN KEY (" + COLUMN_SPACED_REPETITION_ID + ") REFERENCES " + TABLE_SPACED_REPETITION + " (" + KEY_ID + "));";
+
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         languages = context.getResources().getStringArray(R.array.languages);
@@ -170,6 +197,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_GAME);
         db.execSQL(CREATE_TABLE_USER_GAME);
         db.execSQL(CREATE_TABLE_GAME_LOG);
+        db.execSQL(CREATE_TABLE_SPACED_REPETITION);
+        db.execSQL(CREATE_WORD_SPACED_REPETITION);
         insertLanguages(db);
     }
 
