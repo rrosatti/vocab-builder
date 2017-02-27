@@ -1,5 +1,6 @@
 package com.example.rodri.vocabbuilder.util;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -7,7 +8,7 @@ import java.util.Date;
  * Created by rodri on 2/25/2017.
  */
 
-public class DateUtil {
+public class DateUtil{
 
     public long fromDateToMilliseconds(int day, int month, int year) {
         Calendar cal = Calendar.getInstance();

@@ -1,8 +1,11 @@
 package com.example.rodri.vocabbuilder.model;
 
+import android.app.Activity;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.util.SparseLongArray;
+
+import com.example.rodri.vocabbuilder.database.MyDataSource;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,6 +13,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rodri on 2/14/2017.
@@ -30,7 +34,7 @@ public class GameProgress implements Serializable{
         game = new Game();
     }
 
-    public GameProgress(List<Long> wordsIds) {
+    public GameProgress(List<Long> wordsIds, Activity activity) {
         game = new Game();
         setWordsIds(wordsIds);
     }
@@ -49,6 +53,7 @@ public class GameProgress implements Serializable{
         }
     }
 
+
     public void setResult(long wordId, int res) {
         wordsResult.put(wordId, res);
     }
@@ -58,17 +63,14 @@ public class GameProgress implements Serializable{
     }
 
     public void calculateResult() {
-        Collection<Integer> values = wordsResult.values();
-        Iterator it = values.iterator();
-        while (it.hasNext()) {
-            int res = (int) it.next();
-            if (res == 0) {
-                //numIncorrect++;
-                game.setIncorrect(game.getIncorrect()+1);
-            } else {
-                //numCorrect++;
+        for (Map.Entry<Long, Integer> entry : wordsResult.entrySet()) {
+            int res = entry.getValue();
+            if (res == 1) {
                 game.setCorrect(game.getCorrect()+1);
+            } else {
+                game.setIncorrect(game.getIncorrect()+1);
             }
+            System.out.println("key: " + entry.getKey());
         }
     }
 
@@ -92,4 +94,5 @@ public class GameProgress implements Serializable{
     public Game getGame() {
         return game;
     }
+
 }

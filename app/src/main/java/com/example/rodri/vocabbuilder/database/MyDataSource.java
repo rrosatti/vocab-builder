@@ -17,6 +17,7 @@ import com.example.rodri.vocabbuilder.model.User;
 import com.example.rodri.vocabbuilder.model.Word;
 import com.example.rodri.vocabbuilder.util.DateUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ import java.util.List;
  * Created by rodri on 1/31/2017.
  */
 
-public class MyDataSource {
+public class MyDataSource{
 
     private SQLiteDatabase db;
     private MySQLiteHelper helper;
@@ -722,6 +723,19 @@ public class MyDataSource {
 
     }
 
+    public boolean updateSpacedRepetition(long spacedRepetitionId, int stage, int cycle, long lastReview, long nextReview) {
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_STAGE, stage);
+        values.put(MySQLiteHelper.COLUMN_CYCLE, cycle);
+        values.put(MySQLiteHelper.COLUMN_LAST_REVIEW, lastReview);
+        values.put(MySQLiteHelper.COLUMN_NEXT_REVIEW, nextReview);
+
+        int affectedRows = db.update(MySQLiteHelper.TABLE_SPACED_REPETITION, values,
+                MySQLiteHelper.KEY_ID + " = " + spacedRepetitionId, null);
+
+        if (affectedRows > 0) return true;
+        else return false;
+    }
 
 
     /** --------------- OTHER --------------- **/

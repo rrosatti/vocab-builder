@@ -16,10 +16,12 @@ import com.example.rodri.vocabbuilder.interfaces.IFlashCardInterface;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
 import com.example.rodri.vocabbuilder.model.GameProgress;
 import com.example.rodri.vocabbuilder.model.Login;
+import com.example.rodri.vocabbuilder.model.SpacedRepetition;
 import com.example.rodri.vocabbuilder.service.GameProgressService;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -36,7 +38,6 @@ public class FlashcardActivity extends AppCompatActivity implements IFlashCardIn
     private GameProgressService mGameProgressService;
     private boolean mServiceBound = false;
     private GameProgress gameProgress;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +50,7 @@ public class FlashcardActivity extends AppCompatActivity implements IFlashCardIn
         wordsIds = getWords();
 
         if (wordsIds != null) {
-            gameProgress = new GameProgress(wordsIds);
+            gameProgress = new GameProgress(wordsIds, this);
 
             wordsIds.add((long)-1); // it corresponds to the result fragment
             cardAdapter = new CardPagerAdapter(getFragmentManager(), wordsIds);
@@ -132,9 +133,10 @@ public class FlashcardActivity extends AppCompatActivity implements IFlashCardIn
     @Override
     public void showResult() {
         gameProgress.calculateResult();
+        boolean updated = updateSpacedRepetition();
         boolean saved = saveDataToDatabase();
 
-        if (saved) {
+        if (updated && saved) {
             Intent i = new Intent(FlashcardActivity.this, FlashCardResultActivity.class);
             i.putExtra("gameProgress", gameProgress);
             startActivity(i);
@@ -142,6 +144,35 @@ public class FlashcardActivity extends AppCompatActivity implements IFlashCardIn
             finish();
         } else {
             Toast.makeText(this, R.string.toast_something_went_wrong, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean updateSpacedRepetition() {
+        try {
+            dataSource.open();
+
+            if (wordsIds.contains((long)-1)) {
+                wordsIds.remove((long)-1);
+            }
+
+            for (int i=0; i<wordsIds.size(); i++) {
+                long srId = dataSource.getSpacedRepetitionId(wordsIds.get(i));
+                if (srId != 0) {
+                    SpacedRepetition sr = dataSource.getSpacedRepetition(srId);
+                    sr.update(gameProgress.getWordResult(wordsIds.get(i)));
+                    dataSource.updateSpacedRepetition(sr.getId(), sr.getStage(), sr.getCycle(),
+                            sr.getLast_review(), sr.getNext_review());
+                }
+
+            }
+
+            dataSource.close();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            dataSource.close();
+            return false;
         }
     }
 
