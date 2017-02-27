@@ -1,6 +1,5 @@
 package com.example.rodri.vocabbuilder.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,7 +12,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.rodri.vocabbuilder.R;
-import com.example.rodri.vocabbuilder.activity.FlashcardActivity;
+import com.example.rodri.vocabbuilder.activity.FlashCardActivity;
 
 /**
  * Created by rodri on 2/4/2017.
@@ -81,7 +80,7 @@ public class PracticeFragment extends Fragment {
         btPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), FlashcardActivity.class);
+                Intent i = new Intent(getActivity(), FlashCardActivity.class);
                 i.putExtra("numOfWords", numOfWords);
                 getActivity().startActivity(i);
             }

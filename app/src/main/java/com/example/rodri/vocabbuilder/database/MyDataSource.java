@@ -486,6 +486,38 @@ public class MyDataSource{
         return wordsIds;
     }
 
+    // I don't know if it works. Need to test
+    public List<Long> getWordsThatNeedToReview(long userId, int limit) {
+        List<Long> wordsIds = new ArrayList<>();
+        long currentDate = dateUtil.getCurrentDate();
+        /**
+         * SELECT * FROM user_word uw
+                INNER JOIN word_spaced_repetition  wsr ON wsr.word_id = uw.word_id
+                    WHERE uw.user_id = x
+                    WHERE wsr.next_review <= current_date
+                    LIMIT y
+         */
+        Cursor cursor = db.rawQuery("SELECT * FROM " + MySQLiteHelper.TABLE_USER_WORD + " uw "
+            + "INNER JOIN " + MySQLiteHelper.TABLE_WORD_SPACED_REPETITION + " wsr ON " +
+                    " wsr." + MySQLiteHelper.COLUMN_WORD_ID + " = uw." + MySQLiteHelper.COLUMN_WORD_ID
+                    + " WHERE uw." + MySQLiteHelper.COLUMN_USER_ID + " = " + userId
+                    + " WHERE wsr." + MySQLiteHelper.COLUMN_NEXT_REVIEW + " <= " + currentDate
+                    + " LIMIT " + limit, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return null;
+        }
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            wordsIds.add(cursor.getLong(1));
+        }
+
+        cursor.close();
+        return wordsIds;
+    }
+
 
     public List<GameLog> getMostRecentlyGames(long wordId) {
         List<GameLog> log = new ArrayList<>();
