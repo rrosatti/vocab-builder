@@ -498,10 +498,12 @@ public class MyDataSource{
                     LIMIT y
          */
         Cursor cursor = db.rawQuery("SELECT * FROM " + MySQLiteHelper.TABLE_USER_WORD + " uw "
-            + "INNER JOIN " + MySQLiteHelper.TABLE_WORD_SPACED_REPETITION + " wsr ON " +
-                    " wsr." + MySQLiteHelper.COLUMN_WORD_ID + " = uw." + MySQLiteHelper.COLUMN_WORD_ID
+            + "INNER JOIN " + MySQLiteHelper.TABLE_WORD_SPACED_REPETITION + " wsr ON "
+            + " wsr." + MySQLiteHelper.COLUMN_WORD_ID + " = uw." + MySQLiteHelper.COLUMN_WORD_ID
+            + " INNER JOIN " + MySQLiteHelper.TABLE_SPACED_REPETITION + " sr ON "
+            + " sr." + MySQLiteHelper.KEY_ID + " = wsr." + MySQLiteHelper.COLUMN_SPACED_REPETITION_ID
                     + " WHERE uw." + MySQLiteHelper.COLUMN_USER_ID + " = " + userId
-                    + " WHERE wsr." + MySQLiteHelper.COLUMN_NEXT_REVIEW + " <= " + currentDate
+                    + " AND sr." + MySQLiteHelper.COLUMN_NEXT_REVIEW + " <= " + currentDate
                     + " LIMIT " + limit, null);
 
         if (isCursorEmpty(cursor)) {

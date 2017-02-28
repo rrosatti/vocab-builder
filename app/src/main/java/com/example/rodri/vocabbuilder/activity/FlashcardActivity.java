@@ -51,7 +51,7 @@ public class FlashCardActivity extends AppCompatActivity implements IFlashCardIn
             cardAdapter = new CardPagerAdapter(getFragmentManager(), wordsIds);
             pager.setAdapter(cardAdapter);
         } else {
-            Toast.makeText(this, R.string.toast_something_went_wrong, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_no_words_to_review, Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -66,7 +66,8 @@ public class FlashCardActivity extends AppCompatActivity implements IFlashCardIn
             dataSource.open();
 
             long userId = Login.getInstance().getUserId();
-            return dataSource.getDetailedWordsIds(userId, numOfWords);
+            return dataSource.getWordsThatNeedToReview(userId, numOfWords);
+            //return dataSource.getDetailedWordsIds(userId, numOfWords);
 
         } catch (Exception e) {
             e.printStackTrace();

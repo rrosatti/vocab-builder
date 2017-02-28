@@ -22,6 +22,7 @@
         <activity android:name=".activity.FlashCardActivity" />
         <activity android:name=".activity.FlashCardResultActivity" />
         <activity android:name=".activity.GameHistoryActivity" />
+        <activity android:name=".activity.NeedToReviewActivity" />
 
         <service android:name=".service.GameProgressService" />
 

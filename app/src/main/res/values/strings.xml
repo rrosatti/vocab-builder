@@ -30,6 +30,7 @@
     <string name="toast_translation_fields_empty">You must set at least one translation!</string>
     <string name="toast_new_word_created">New word saved!</string>
     <string name="toast_something_went_wrong">Sorry, something went wrong!</string>
+    <string name="toast_no_words_to_review">Congratulations! There are no words to review!</string>
 
     <!-- Languages -->
     <string-array name="languages">
@@ -78,6 +79,8 @@
     <string name="text_correct_label">Correct</string>
     <string name="text_incorrect_label">Incorrect</string>
     <string name="text_date_label">Date</string>
+    <string name="text_words_label">Words</string>
+    <string name="text_review_meter_label">Review Meter</string>
 
 
     <!-- Statistics List -->

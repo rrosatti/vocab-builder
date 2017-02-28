@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.rodri.vocabbuilder.R;
 import com.example.rodri.vocabbuilder.activity.GameHistoryActivity;
+import com.example.rodri.vocabbuilder.activity.NeedToReviewActivity;
 
 import java.util.List;
 
@@ -37,6 +38,8 @@ public class StatisticsOptionsAdapter extends RecyclerView.Adapter<StatisticsOpt
                 public void onClick(View v) {
                     switch (pos) {
                         case 0: {
+                            Intent i = new Intent(activity, NeedToReviewActivity.class);
+                            activity.startActivity(i);
                             break;
                         }
                         case 1: {

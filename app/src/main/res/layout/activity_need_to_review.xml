@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:padding="20dp">
+
+    <LinearLayout
+        android:id="@+id/activityNeedToReview_containerTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/text_words_label"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/text_review_meter_label"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/activityNeedToReview_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000"
+        android:layout_below="@id/activityNeedToReview_containerTop"
+        android:layout_marginTop="10dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/activityNeedToReview_listOfWords"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/activityNeedToReview_divider"
+        android:layout_marginTop="10dp" />
+
+</RelativeLayout>
