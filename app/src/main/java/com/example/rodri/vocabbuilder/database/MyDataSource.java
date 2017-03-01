@@ -93,6 +93,10 @@ public class MyDataSource{
             MySQLiteHelper.COLUMN_WORD_ID,
             MySQLiteHelper.COLUMN_SPACED_REPETITION_ID
     };
+    private String[] userNotificationColumns = {
+            MySQLiteHelper.COLUMN_USER_ID,
+            MySQLiteHelper.COLUMN_NOTIFY
+    };
 
     public MyDataSource(Context context) {
         helper = new MySQLiteHelper(context);
@@ -242,6 +246,17 @@ public class MyDataSource{
         values.put(MySQLiteHelper.COLUMN_SPACED_REPETITION_ID, spacedRepetitionId);
 
         long insertedId = db.insert(MySQLiteHelper.TABLE_WORD_SPACED_REPETITION, null, values);
+
+        if (insertedId != 0) return true;
+        else return false;
+    }
+
+    public boolean createUserNotification(long userId, int notify) {
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_USER_ID, userId);
+        values.put(MySQLiteHelper.COLUMN_NOTIFY, notify);
+
+        long insertedId = db.insert(MySQLiteHelper.TABLE_USER_NOTIFICATION, null, values);
 
         if (insertedId != 0) return true;
         else return false;
@@ -489,7 +504,6 @@ public class MyDataSource{
         return wordsIds;
     }
 
-    // I don't know if it works. Need to test
     public List<Long> getWordsThatNeedToReview(long userId, int limit) {
         List<Long> wordsIds = new ArrayList<>();
         long currentDate = dateUtil.getCurrentDate();
@@ -500,15 +514,21 @@ public class MyDataSource{
                     WHERE wsr.next_review <= current_date
                     LIMIT y
          */
-        Cursor cursor = db.rawQuery("SELECT * FROM " + MySQLiteHelper.TABLE_USER_WORD + " uw "
-            + "INNER JOIN " + MySQLiteHelper.TABLE_WORD_SPACED_REPETITION + " wsr ON "
-            + " wsr." + MySQLiteHelper.COLUMN_WORD_ID + " = uw." + MySQLiteHelper.COLUMN_WORD_ID
-            + " INNER JOIN " + MySQLiteHelper.TABLE_SPACED_REPETITION + " sr ON "
-            + " sr." + MySQLiteHelper.KEY_ID + " = wsr." + MySQLiteHelper.COLUMN_SPACED_REPETITION_ID
-                    + " WHERE uw." + MySQLiteHelper.COLUMN_USER_ID + " = " + userId
-                    + " AND sr." + MySQLiteHelper.COLUMN_NEXT_REVIEW + " <= " + currentDate
-                    + " ORDER BY sr." + MySQLiteHelper.COLUMN_STAGE + " DESC "
-                    + " LIMIT " + limit, null);
+        String sLimit = "";
+        if (limit > 0) {
+            sLimit = " LIMIT " + limit;
+        }
+
+        String sRawQuery = "SELECT * FROM " + MySQLiteHelper.TABLE_USER_WORD + " uw "
+                + "INNER JOIN " + MySQLiteHelper.TABLE_WORD_SPACED_REPETITION + " wsr ON "
+                + " wsr." + MySQLiteHelper.COLUMN_WORD_ID + " = uw." + MySQLiteHelper.COLUMN_WORD_ID
+                + " INNER JOIN " + MySQLiteHelper.TABLE_SPACED_REPETITION + " sr ON "
+                + " sr." + MySQLiteHelper.KEY_ID + " = wsr." + MySQLiteHelper.COLUMN_SPACED_REPETITION_ID
+                + " WHERE uw." + MySQLiteHelper.COLUMN_USER_ID + " = " + userId
+                + " AND sr." + MySQLiteHelper.COLUMN_NEXT_REVIEW + " <= " + currentDate
+                + " ORDER BY sr." + MySQLiteHelper.COLUMN_STAGE + " DESC ";
+
+        Cursor cursor = db.rawQuery(sRawQuery + sLimit, null);
 
         if (isCursorEmpty(cursor)) {
             cursor.close();
@@ -523,7 +543,6 @@ public class MyDataSource{
         cursor.close();
         return wordsIds;
     }
-
 
     public List<GameLog> getMostRecentlyGames(long wordId) {
         List<GameLog> log = new ArrayList<>();
@@ -668,6 +687,51 @@ public class MyDataSource{
         return cursor.getLong(1);
     }
 
+    public List<Long> getAllWordsThatNeedToReview() {
+        List<Long> wordsIds = new ArrayList<>();
+
+        long currentDate = dateUtil.getCurrentDate();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + MySQLiteHelper.TABLE_USER_WORD + " uw "
+                + "INNER JOIN " + MySQLiteHelper.TABLE_WORD_SPACED_REPETITION + " wsr ON "
+                + " wsr." + MySQLiteHelper.COLUMN_WORD_ID + " = uw." + MySQLiteHelper.COLUMN_WORD_ID
+                + " INNER JOIN " + MySQLiteHelper.TABLE_SPACED_REPETITION + " sr ON "
+                + " sr." + MySQLiteHelper.KEY_ID + " = wsr." + MySQLiteHelper.COLUMN_SPACED_REPETITION_ID
+                + " WHERE sr." + MySQLiteHelper.COLUMN_NEXT_REVIEW + " <= " + currentDate
+                + " ORDER BY sr." + MySQLiteHelper.COLUMN_STAGE + " DESC ", null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return null;
+        }
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            wordsIds.add(cursor.getLong(1));
+        }
+
+        cursor.close();
+        return wordsIds;
+    }
+
+    public List<Long> getUsersActiveNotification() {
+        List<Long> userIds = new ArrayList<>();
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_USER_NOTIFICATION, userNotificationColumns,
+                MySQLiteHelper.COLUMN_NOTIFY + " = " + 1, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return null;
+        }
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            userIds.add(cursor.getLong(0));
+        }
+
+        cursor.close();
+        return userIds;
+    }
+
     /** --------------- CURSOR TO --------------- **/
 
     public User cursorToUser(Cursor cursor) {
@@ -785,5 +849,21 @@ public class MyDataSource{
             System.out.println("The cursor is empty!");
             return true;
         }
+    }
+
+    private boolean isNotificationActive(long userId) {
+        Cursor cursor = db.query(MySQLiteHelper.TABLE_USER_NOTIFICATION, userNotificationColumns,
+                MySQLiteHelper.COLUMN_USER_ID + " = " + userId, null, null, null, null, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return false;
+        }
+
+        cursor.moveToFirst();
+        long active = cursor.getLong(1);
+
+        if (active == 1) return true;
+        else return false;
     }
 }

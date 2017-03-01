@@ -68,6 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
                 dataSource.open();
 
                 long userId = dataSource.createUser(name, username, password);
+                dataSource.createUserNotification(userId, 1);
 
                 if (userId != 0) {
                     String message = getString(R.string.toast_sign_up_success);

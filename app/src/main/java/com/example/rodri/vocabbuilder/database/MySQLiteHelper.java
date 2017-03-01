@@ -35,6 +35,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_USER_GAME = "user_game";
     public static final String TABLE_SPACED_REPETITION = "spaced_repetition";
     public static final String TABLE_WORD_SPACED_REPETITION = "word_spaced_repetition";
+    public static final String TABLE_USER_NOTIFICATION = "";
 
     // Common column names
     public static final String KEY_ID = "id";
@@ -83,6 +84,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     // WordSpacedRepetition: column names { word_id, ... }
     public static final String COLUMN_SPACED_REPETITION_ID = "spaced_repetition";
+
+    // UserNotification: column names { user_id, ... }
+    public static final String COLUMN_NOTIFY = "notify";
 
 
     /** -------------- CREATE TABLES -------------- **/
@@ -172,13 +176,20 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_LAST_REVIEW + " INTEGER NOT NULL, "
             + COLUMN_NEXT_REVIEW + " INTEGER NOT NULL);";
 
-    public static final String CREATE_WORD_SPACED_REPETITION =
+    public static final String CREATE_TABLE_WORD_SPACED_REPETITION =
             "CREATE TABLE " + TABLE_WORD_SPACED_REPETITION + " ("
             + COLUMN_WORD_ID + " INTEGER NOT NULL, "
             + COLUMN_SPACED_REPETITION_ID + " INTEGER NOT NULL, "
             + "PRIMARY KEY (" + COLUMN_WORD_ID + ", " + COLUMN_SPACED_REPETITION_ID + "), "
             + "FOREIGN KEY (" + COLUMN_WORD_ID + ") REFERENCES " + TABLE_WORD + " (" + KEY_ID + "), "
             + "FOREIGN KEY (" + COLUMN_SPACED_REPETITION_ID + ") REFERENCES " + TABLE_SPACED_REPETITION + " (" + KEY_ID + "));";
+
+    public static final String CREATE_TABLE_USER_NOTIFICATION =
+            "CREATE TABLE " + TABLE_USER_NOTIFICATION + " ("
+            + COLUMN_USER_ID + " INTEGER NOT NULL, "
+            + COLUMN_NOTIFY + " INTEGER NOT NULL, "
+            + "PRIMARY KEY (" + COLUMN_USER_ID + "), "
+            + "FOREIGN KEY (" + COLUMN_USER_ID + ") REFERENCES " + TABLE_USER + " (" + KEY_ID + "));";
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -198,7 +209,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_USER_GAME);
         db.execSQL(CREATE_TABLE_GAME_LOG);
         db.execSQL(CREATE_TABLE_SPACED_REPETITION);
-        db.execSQL(CREATE_WORD_SPACED_REPETITION);
+        db.execSQL(CREATE_TABLE_WORD_SPACED_REPETITION);
+        db.execSQL(CREATE_TABLE_USER_NOTIFICATION);
         insertLanguages(db);
     }
 
