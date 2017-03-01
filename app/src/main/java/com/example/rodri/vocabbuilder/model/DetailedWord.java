@@ -9,17 +9,20 @@ public class DetailedWord {
     private Word word;
     private Language language;
     private Performance performance;
+    private SpacedRepetition sRepetition;
 
     public DetailedWord() {
         word = new Word();
         language = new Language();
         performance = new Performance();
+        sRepetition = new SpacedRepetition();
     }
 
-    public DetailedWord(Word word, Language language, Performance performance) {
+    public DetailedWord(Word word, Language language, Performance performance, SpacedRepetition sRepetition) {
         this.word = word;
         this.language = language;
         this.performance = performance;
+        this.sRepetition = sRepetition;
     }
 
     public Word getWord() {
@@ -44,5 +47,13 @@ public class DetailedWord {
 
     public void setLanguage(Language language) {
         this.language = language;
+    }
+
+    public SpacedRepetition getSpacedRepetition() {
+        return sRepetition;
+    }
+
+    public void setSpacedRepetition(SpacedRepetition sRepetition) {
+        this.sRepetition = sRepetition;
     }
 }

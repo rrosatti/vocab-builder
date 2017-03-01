@@ -401,8 +401,11 @@ public class MyDataSource{
         long performanceId = getPerformanceId(wordId);
         Performance performance = getPerformance(performanceId);
 
+        long spacedRepetitionId = getSpacedRepetitionId(wordId);
+        SpacedRepetition sRepetition = getSpacedRepetition(spacedRepetitionId);
+
         if (word != null && language != null && performance != null) {
-            DetailedWord detailedWord = new DetailedWord(word, language, performance);
+            DetailedWord detailedWord = new DetailedWord(word, language, performance, sRepetition);
             return detailedWord;
         } else {
             System.out.println("Something went wrong. getDetailedWord()");
@@ -504,6 +507,7 @@ public class MyDataSource{
             + " sr." + MySQLiteHelper.KEY_ID + " = wsr." + MySQLiteHelper.COLUMN_SPACED_REPETITION_ID
                     + " WHERE uw." + MySQLiteHelper.COLUMN_USER_ID + " = " + userId
                     + " AND sr." + MySQLiteHelper.COLUMN_NEXT_REVIEW + " <= " + currentDate
+                    + " ORDER BY sr." + MySQLiteHelper.COLUMN_STAGE + " DESC "
                     + " LIMIT " + limit, null);
 
         if (isCursorEmpty(cursor)) {
