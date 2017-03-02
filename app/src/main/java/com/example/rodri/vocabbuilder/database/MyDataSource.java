@@ -19,6 +19,7 @@ import com.example.rodri.vocabbuilder.util.DateUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -504,8 +505,8 @@ public class MyDataSource{
         return wordsIds;
     }
 
-    public List<Long> getWordsThatNeedToReview(long userId, int limit) {
-        List<Long> wordsIds = new ArrayList<>();
+    public LinkedList<Long> getWordsThatNeedToReview(long userId, int limit) {
+        LinkedList<Long> wordsIds = new LinkedList<>();
         long currentDate = dateUtil.getCurrentDate();
         /**
          * SELECT * FROM user_word uw
@@ -526,7 +527,7 @@ public class MyDataSource{
                 + " sr." + MySQLiteHelper.KEY_ID + " = wsr." + MySQLiteHelper.COLUMN_SPACED_REPETITION_ID
                 + " WHERE uw." + MySQLiteHelper.COLUMN_USER_ID + " = " + userId
                 + " AND sr." + MySQLiteHelper.COLUMN_NEXT_REVIEW + " <= " + currentDate
-                + " ORDER BY sr." + MySQLiteHelper.COLUMN_STAGE + " DESC ";
+                + " ORDER BY sr." + MySQLiteHelper.COLUMN_NEXT_REVIEW;
 
         Cursor cursor = db.rawQuery(sRawQuery + sLimit, null);
 
@@ -538,10 +539,40 @@ public class MyDataSource{
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             wordsIds.add(cursor.getLong(1));
+            cursor.moveToNext();
         }
 
         cursor.close();
         return wordsIds;
+    }
+
+    public LinkedList<DetailedWord> getDetailedWordsInReviewOrder(long userId) {
+        LinkedList<DetailedWord> detailedWords = new LinkedList<>();
+
+        String sRawQuery = "SELECT * FROM " + MySQLiteHelper.TABLE_USER_WORD + " uw "
+                + "INNER JOIN " + MySQLiteHelper.TABLE_WORD_SPACED_REPETITION + " wsr ON "
+                + " wsr." + MySQLiteHelper.COLUMN_WORD_ID + " = uw." + MySQLiteHelper.COLUMN_WORD_ID
+                + " INNER JOIN " + MySQLiteHelper.TABLE_SPACED_REPETITION + " sr ON "
+                + " sr." + MySQLiteHelper.KEY_ID + " = wsr." + MySQLiteHelper.COLUMN_SPACED_REPETITION_ID
+                + " WHERE uw." + MySQLiteHelper.COLUMN_USER_ID + " = " + userId
+                + " ORDER BY sr." + MySQLiteHelper.COLUMN_NEXT_REVIEW;
+
+        Cursor cursor = db.rawQuery(sRawQuery, null);
+
+        if (isCursorEmpty(cursor)) {
+            cursor.close();
+            return null;
+        }
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            detailedWords.add(getDetailedWord(cursor.getLong(1)));
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return detailedWords;
+
     }
 
     public List<GameLog> getMostRecentlyGames(long wordId) {

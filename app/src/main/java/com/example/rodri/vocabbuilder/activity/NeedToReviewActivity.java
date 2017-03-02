@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.rodri.vocabbuilder.R;
 import com.example.rodri.vocabbuilder.adapter.ReviewWordAdapter;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
+import com.example.rodri.vocabbuilder.database.MySQLiteHelper;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
 import com.example.rodri.vocabbuilder.model.Login;
 
@@ -56,7 +57,7 @@ public class NeedToReviewActivity extends AppCompatActivity {
             dataSource.open();
 
             long userId = Login.getInstance().getUserId();
-            return dataSource.getDetailedWords(userId);
+            return dataSource.getDetailedWordsInReviewOrder(userId);
 
         } catch (Exception e) {
             e.printStackTrace();

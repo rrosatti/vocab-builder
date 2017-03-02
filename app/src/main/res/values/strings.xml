@@ -88,5 +88,12 @@
         <item>Need to Review</item>
         <item>Game History</item>
     </array>
+
+    <!-- String -->
+    <plurals name="string_notification_message">
+        <item quantity="one">Hello, %1$s! There is %2$d word that need to be reviewed.</item>
+        <item quantity="other">Hello, %1$s! There are %2$d words that need to be reviewed.</item>
+    </plurals>
+
     
 </resources>

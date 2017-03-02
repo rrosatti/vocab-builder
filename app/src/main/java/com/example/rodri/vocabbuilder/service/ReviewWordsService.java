@@ -1,11 +1,19 @@
 package com.example.rodri.vocabbuilder.service;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.IBinder;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.NotificationCompat;
 
+import com.example.rodri.vocabbuilder.R;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
+import com.example.rodri.vocabbuilder.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +78,50 @@ public class ReviewWordsService extends Service {
     }
 
     private void showNotification(long userId, long numWords) {
-        // get user info (name)
-        return null;
+        String message = "";
+        User user = getUser(userId);
+        if (user != null) {
+            Resources res = getResources();
+            message = res.getQuantityString(R.plurals.string_notification_message, (int) numWords, user.getName(), numWords);
+        }
+
+        // need to change the icon
+        NotificationCompat.Builder mBuilder = (android.support.v7.app.NotificationCompat.Builder)
+                new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.german)
+                .setContentTitle("VocabBuilder")
+                .setContentText(message)
+                .setAutoCancel(true);
+
+        /**Intent resultIntent = new Intent(this, WordsToReviewActivity.class);
+        resultIntent.putExtra("userId", userId);
+
+        // The Stack Builder ensures that navigating backwards from the Activity leads out of
+        // the application to the Home Screen
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(WordsToReviewActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
+
+        int mNotificationId = 001;
+
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(mNotificationId, mBuilder.build());
+*/
+    }
+
+    private User getUser(long userId) {
+        try {
+            dataSource.open();
+
+            return dataSource.getUser(userId);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            dataSource.close();
+            return null;
+        }
     }
 }

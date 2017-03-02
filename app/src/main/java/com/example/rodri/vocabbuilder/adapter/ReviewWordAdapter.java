@@ -14,6 +14,7 @@ import com.example.rodri.vocabbuilder.R;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
 import com.example.rodri.vocabbuilder.model.SpacedRepetition;
 import com.example.rodri.vocabbuilder.model.Word;
+import com.example.rodri.vocabbuilder.util.DateUtil;
 
 import java.util.List;
 
@@ -26,6 +27,8 @@ public class ReviewWordAdapter extends RecyclerView.Adapter<ReviewWordAdapter.My
     private Activity activity;
     private List<DetailedWord> detailedWords;
     private TypedArray flagImages;
+    private long currentDate;
+    private DateUtil dateUtil = new DateUtil();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -48,6 +51,7 @@ public class ReviewWordAdapter extends RecyclerView.Adapter<ReviewWordAdapter.My
         this.activity = activity;
         this.detailedWords = detailedWords;
         this.flagImages = activity.getResources().obtainTypedArray(R.array.language_flags);
+        this.currentDate = dateUtil.getCurrentDate();
     }
 
     @Override
@@ -75,34 +79,29 @@ public class ReviewWordAdapter extends RecyclerView.Adapter<ReviewWordAdapter.My
 
         holder.txtWord.setText(word.getName());
 
-        // set progress bar according to the spaced repetition stage
-        switch (sRepetition.getStage()) {
-            case 1: {
-                holder.progressReviewMeter.setProgress(10);
-                break;
-            }
-            case 2: {
-                holder.progressReviewMeter.setProgress(25);
-                break;
-            }
-            case 3: {
-                holder.progressReviewMeter.setProgress(45);
-                holder.progressReviewMeter.setProgressDrawable(
-                        activity.getDrawable(R.drawable.custom_progress_bar_horizontal_dark_blue));
-                break;
-            }
-            case 4: {
-                holder.progressReviewMeter.setProgress(75);
-                holder.progressReviewMeter.setProgressDrawable(
-                        activity.getDrawable(R.drawable.custom_progress_bar_horizontal_light_orange));
-                break;
-            }
-            case 5: {
-                holder.progressReviewMeter.setProgress(100);
-                holder.progressReviewMeter.setProgressDrawable(
-                        activity.getDrawable(R.drawable.custom_progress_bar_horizontal_dark_orange));
-                break;
-            }
+        System.out.println("Current: " + currentDate);
+        System.out.println("word: " + word.getName() + " time: " + sRepetition.getNext_review());
+        long dayInMillis = 86400000;
+        long nextReview = sRepetition.getNext_review();
+
+        if (nextReview <= currentDate ) {
+            holder.progressReviewMeter.setProgress(100);
+        } else if (currentDate < nextReview && (nextReview - currentDate) <= 3*dayInMillis) {
+            holder.progressReviewMeter.setProgress(80);
+            holder.progressReviewMeter.setProgressDrawable(
+                    activity.getDrawable(R.drawable.custom_progress_bar_horizontal_dark_orange));
+        } else if (3*dayInMillis < nextReview && (nextReview - currentDate) <= 10*dayInMillis ) {
+            holder.progressReviewMeter.setProgress(65);
+            holder.progressReviewMeter.setProgressDrawable(
+                    activity.getDrawable(R.drawable.custom_progress_bar_horizontal_light_orange));
+        } else if (10*dayInMillis < nextReview && (nextReview - currentDate) <= 20*dayInMillis) {
+            holder.progressReviewMeter.setProgress(45);
+            holder.progressReviewMeter.setProgressDrawable(
+                    activity.getDrawable(R.drawable.custom_progress_bar_horizontal_dark_blue));
+        } else if (20*dayInMillis < nextReview && (nextReview-currentDate) <= 30*dayInMillis) {
+            holder.progressReviewMeter.setProgress(10);
+            holder.progressReviewMeter.setProgressDrawable(
+                    activity.getDrawable(R.drawable.custom_progress_bar_horizontal_light_blue));
         }
 
     }

@@ -25,6 +25,7 @@
         <activity android:name=".activity.FlashCardResultActivity" />
         <activity android:name=".activity.GameHistoryActivity" />
         <activity android:name=".activity.NeedToReviewActivity" />
+        <activity android:name=".activity.WordsToReviewActivity" />
 
         <service android:name=".service.ReviewWordsService" />
 
