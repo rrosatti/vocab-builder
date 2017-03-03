@@ -1,12 +1,16 @@
 package com.example.rodri.vocabbuilder.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,12 +25,19 @@ import com.example.rodri.vocabbuilder.util.Util;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String MY_PREFERENCES = "com.example.rodri.vocabbuilder";
+    private static final String AUTO_LOGIN = "com.example.rodri.vocabbuilder.autologin";
+    private static final String USER_ID = "com.example.rodri.vocabbuilder.userid";
+
     private EditText etUsername;
     private EditText etPassword;
     private Button btLogin;
     private Button btSignUp;
+    private CheckBox checkAutoLogin;
     private MyDataSource dataSource;
     private Util util = new Util();
+    private boolean autoLogin;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +45,14 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         iniViews();
+        sharedPreferences = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
+
+        checkAutoLogin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                autoLogin = isChecked;
+            }
+        });
 
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = (EditText) findViewById(R.id.activityLogin_etPassword);
         btLogin = (Button) findViewById(R.id.activityLogin_btLogin);
         btSignUp = (Button) findViewById(R.id.activityLogin_btSignUp);
+        checkAutoLogin = (CheckBox) findViewById(R.id.activityLogin_checkAutoLogin);
     }
 
     private void login() {
@@ -66,6 +86,14 @@ public class LoginActivity extends AppCompatActivity {
             boolean loginSuccess = Login.getInstance().login(username, password, LoginActivity.this);
 
             if (loginSuccess) {
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                editor.putBoolean(AUTO_LOGIN, autoLogin);
+                editor.putLong(USER_ID, Login.getInstance().getUserId());
+
+                editor.apply();
+
                 Intent i = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(i);
                 finish();

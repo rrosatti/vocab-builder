@@ -26,6 +26,7 @@
         <activity android:name=".activity.GameHistoryActivity" />
         <activity android:name=".activity.NeedToReviewActivity" />
         <activity android:name=".activity.WordsToReviewActivity" />
+        <activity android:name=".activity.AccountActivity" />
 
         <service android:name=".service.ReviewWordsService" />
 

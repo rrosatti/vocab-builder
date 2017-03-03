@@ -43,7 +43,7 @@ public class NeedToReviewActivity extends AppCompatActivity {
             listOfWords.setLayoutManager(llm);
             listOfWords.setAdapter(adapter);
         } else {
-            Toast.makeText(this, R.string.toast_something_went_wrong, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_nothing_to_show, Toast.LENGTH_SHORT).show();
             finish();
         }
     }

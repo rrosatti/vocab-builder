@@ -35,7 +35,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_USER_GAME = "user_game";
     public static final String TABLE_SPACED_REPETITION = "spaced_repetition";
     public static final String TABLE_WORD_SPACED_REPETITION = "word_spaced_repetition";
-    public static final String TABLE_USER_NOTIFICATION = "";
+    public static final String TABLE_USER_NOTIFICATION = "user_notification";
 
     // Common column names
     public static final String KEY_ID = "id";

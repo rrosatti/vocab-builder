@@ -1,6 +1,7 @@
 package com.example.rodri.vocabbuilder.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.rodri.vocabbuilder.R;
+import com.example.rodri.vocabbuilder.activity.AccountActivity;
 
 import java.util.List;
 
@@ -29,7 +31,24 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyView
             super(view);
 
             txtOption = (TextView) view.findViewById(R.id.customListItem_txtItem);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (pos) {
+                        case 0: {
+                            Intent i = new Intent(activity, AccountActivity.class);
+                            activity.startActivity(i);
+                            break;
+                        }
+                        case 1: {
+                            break;
+                        }
+                    }
+                }
+            });
         }
+
     }
 
     public SettingsAdapter(Activity activity, List<String> settingsOptions) {

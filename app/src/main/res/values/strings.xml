@@ -17,6 +17,7 @@
     <string name="button_cancel">Cancel</string>
     <string name="button_play">Play</string>
     <string name="button_result">Result</string>
+    <string name="button_change_password">Change Password</string>
 
     <!-- Toast -->
     <string name="toast_login_failed">username or password are incorrect!</string>
@@ -31,6 +32,9 @@
     <string name="toast_new_word_created">New word saved!</string>
     <string name="toast_something_went_wrong">Sorry, something went wrong!</string>
     <string name="toast_no_words_to_review">Congratulations! There are no words to review!</string>
+    <string name="toast_all_fields_must_be_filled">All fields must be filled!</string>
+    <string name="toast_no_games_history_to_show">There\'s no game history to show!</string>
+    <string name="toast_nothing_to_show">There\'s nothing to show!</string>
 
     <!-- Languages -->
     <string-array name="languages">
@@ -83,6 +87,9 @@
     <string name="text_review_meter_label">Review Meter</string>
     <string name="text_notification">Notification</string>
     <string name="text_auto_login">Auto-login</string>
+    <string name="text_name">Name</string>
+    <string name="text_username">Username</string>
+    <string name="text_new_password">New Password</string>
 
 
     <!-- Statistics List -->
@@ -103,5 +110,12 @@
         <item>About</item>
     </string-array>
 
-    
+    <!-- Check Box -->
+    <string name="check_remember_me">Remember me</string>
+
+    <!-- Dialog -->
+    <string name="dialog_save_changes">Confirm changes?</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
+
 </resources>

@@ -769,7 +769,7 @@ public class MyDataSource{
         User user = new User();
         user.setId(cursor.getLong(0));
         user.setName(cursor.getString(1));
-        user.setName(cursor.getString(2));
+        user.setUsername(cursor.getString(2));
         user.setPassword(cursor.getString(3));
         return user;
     }
@@ -870,6 +870,29 @@ public class MyDataSource{
         else return false;
     }
 
+    public boolean updateUserNotification(long userId, int notify) {
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_NOTIFY, notify);
+
+        int affectedRows = db.update(MySQLiteHelper.TABLE_USER_NOTIFICATION, values,
+                MySQLiteHelper.COLUMN_USER_ID + " = " + userId, null);
+
+        if (affectedRows > 0) return true;
+        else return false;
+    }
+
+    public boolean updateUser(long userId, String name, String username, String password) {
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.KEY_NAME, name);
+        values.put(MySQLiteHelper.COLUMN_USERNAME, username);
+        values.put(MySQLiteHelper.COLUMN_PASSWORD, password);
+
+        int affectedRows = db.update(MySQLiteHelper.TABLE_USER, values,
+                MySQLiteHelper.KEY_ID + " = " + userId, null);
+
+        if (affectedRows > 0) return true;
+        else return false;
+    }
 
     /** --------------- OTHER --------------- **/
 

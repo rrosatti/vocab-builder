@@ -32,6 +32,7 @@ public class SettingsFragment extends Fragment {
 
     private static final String MY_PREFERENCES = "com.example.rodri.vocabbuilder";
     private static final String AUTO_LOGIN = "com.example.rodri.vocabbuilder.autologin";
+    private static final String USER_ID = "com.example.rodri.vocabbuilder.userid";
 
     private Switch switchNotification;
     private Switch switchAutoLogin;
@@ -42,6 +43,7 @@ public class SettingsFragment extends Fragment {
     private SettingsAdapter adapter;
     private boolean autoLogin;
     private boolean notify;
+    private long userId;
 
     @Nullable
     @Override
@@ -56,6 +58,8 @@ public class SettingsFragment extends Fragment {
         autoLogin = sharedPreferences.getBoolean(AUTO_LOGIN, false);
         switchAutoLogin.setChecked(autoLogin);
 
+        userId = Login.getInstance().getUserId();
+
         notify = checkUserNotificationOption();
         switchNotification.setChecked(notify);
 
@@ -68,8 +72,16 @@ public class SettingsFragment extends Fragment {
         switchAutoLogin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Toast.makeText(getActivity(), "isChecked: " + isChecked, Toast.LENGTH_SHORT).show();
                 autoLogin = isChecked;
+                saveAutoLogin();
+            }
+        });
+
+        switchNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                notify = isChecked;
+                saveNotification();
             }
         });
 
@@ -86,7 +98,6 @@ public class SettingsFragment extends Fragment {
         try {
             dataSource.open();
 
-            long userId = Login.getInstance().getUserId();
             return dataSource.isNotificationActive(userId);
 
         } catch (Exception e) {
@@ -95,4 +106,29 @@ public class SettingsFragment extends Fragment {
             return false;
         }
     }
+
+    private void saveNotification() {
+        try {
+            dataSource.open();
+
+            int iNotify = 0;
+            if (notify) iNotify = 1;
+
+            dataSource.updateUserNotification(userId, iNotify);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            dataSource.close();
+        }
+    }
+
+    private void saveAutoLogin() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putBoolean(AUTO_LOGIN, autoLogin);
+        editor.putLong(USER_ID, userId);
+
+        editor.apply();
+    }
+
 }

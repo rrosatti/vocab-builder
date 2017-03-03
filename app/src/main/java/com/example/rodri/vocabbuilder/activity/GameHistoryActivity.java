@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ public class GameHistoryActivity extends AppCompatActivity {
     private GameHistoryAdapter adapter;
     private List<Game> games;
     private ProgressBar progressBar;
+    private LinearLayout containerBottom;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class GameHistoryActivity extends AppCompatActivity {
         txtCorrectBottom = (TextView) findViewById(R.id.activityGameHistory_txtCorrectBottom);
         txtIncorrectBottom = (TextView) findViewById(R.id.activityGameHistory_txtIncorrectBottom);
         progressBar = (ProgressBar) findViewById(R.id.activityGameHistory_progressBar);
+        containerBottom = (LinearLayout) findViewById(R.id.activityGameHistory_containerBottom);
     }
 
     private List<Game> getGames() {
@@ -123,9 +126,12 @@ public class GameHistoryActivity extends AppCompatActivity {
                 listOfGames.setLayoutManager(llm);
                 listOfGames.setAdapter(adapter);
 
+                containerBottom.setVisibility(View.VISIBLE);
+
             } else {
                 Toast.makeText(GameHistoryActivity.this,
-                        R.string.toast_something_went_wrong, Toast.LENGTH_SHORT).show();
+                        R.string.toast_no_games_history_to_show, Toast.LENGTH_SHORT).show();
+                finish();
             }
         }
     }
