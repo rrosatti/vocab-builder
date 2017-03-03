@@ -1,6 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" android:padding="20dp">
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/tabSettings_containerNotification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/text_notification"
+            android:layout_weight="3"
+            android:textSize="16sp"
+            android:layout_marginStart="10dp"/>
+
+        <Switch
+            android:id="@+id/tabSettings_switchNotification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"  />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/tabSettings_divider_Notification"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000"
+        android:layout_below="@id/tabSettings_containerNotification"
+        android:layout_marginTop="10dp"/>
+
+    <LinearLayout
+        android:id="@+id/tabSettings_containerAutoLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/tabSettings_divider_Notification"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/text_auto_login"
+            android:layout_weight="3"
+            android:textSize="16sp"
+            android:layout_marginStart="10dp"/>
+
+        <Switch
+            android:id="@+id/tabSettings_switchAutoLogin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/tabSettings_divider_AutoLogin"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000"
+        android:layout_below="@id/tabSettings_containerAutoLogin"
+        android:layout_marginTop="10dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/tabSettings_listOfSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tabSettings_divider_AutoLogin" />
+
+</RelativeLayout>

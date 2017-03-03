@@ -81,6 +81,8 @@
     <string name="text_date_label">Date</string>
     <string name="text_words_label">Words</string>
     <string name="text_review_meter_label">Review Meter</string>
+    <string name="text_notification">Notification</string>
+    <string name="text_auto_login">Auto-login</string>
 
 
     <!-- Statistics List -->
@@ -94,6 +96,12 @@
         <item quantity="one">Hello, %1$s! There is %2$d word that need to be reviewed.</item>
         <item quantity="other">Hello, %1$s! There are %2$d words that need to be reviewed.</item>
     </plurals>
+
+    <!-- Settings Options -->
+    <string-array name="settings_options">
+        <item>Account</item>
+        <item>About</item>
+    </string-array>
 
     
 </resources>

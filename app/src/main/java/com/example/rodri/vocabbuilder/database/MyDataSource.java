@@ -882,7 +882,7 @@ public class MyDataSource{
         }
     }
 
-    private boolean isNotificationActive(long userId) {
+    public boolean isNotificationActive(long userId) {
         Cursor cursor = db.query(MySQLiteHelper.TABLE_USER_NOTIFICATION, userNotificationColumns,
                 MySQLiteHelper.COLUMN_USER_ID + " = " + userId, null, null, null, null, null);
 
