@@ -27,6 +27,7 @@
         <activity android:name=".activity.NeedToReviewActivity" />
         <activity android:name=".activity.WordsToReviewActivity" />
         <activity android:name=".activity.AccountActivity" />
+        <activity android:name=".activity.AboutActivity" />
 
         <service android:name=".service.ReviewWordsService" />
 

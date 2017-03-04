@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.rodri.vocabbuilder.R;
+import com.example.rodri.vocabbuilder.activity.AboutActivity;
 import com.example.rodri.vocabbuilder.activity.AccountActivity;
 
 import java.util.List;
@@ -42,6 +43,8 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.MyView
                             break;
                         }
                         case 1: {
+                            Intent i = new Intent(activity, AboutActivity.class);
+                            activity.startActivity(i);
                             break;
                         }
                     }
