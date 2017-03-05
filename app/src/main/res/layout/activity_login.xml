@@ -37,14 +37,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/button_login"
-            android:layout_marginTop="30dp"/>
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_button_states"
+            android:textColor="@drawable/button_text_color"/>
 
         <Button
             android:id="@+id/activityLogin_btSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/button_sign_up"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="15dp"
+            android:background="@drawable/sign_up_button_states"
+            android:textColor="@drawable/sign_up_button_text_color"/>
 
     </LinearLayout>
 

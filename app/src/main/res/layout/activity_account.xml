@@ -1,97 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent" android:padding="20dp">
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:padding="20dp"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_name"/>
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/activityAccount_etName"
-                android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_name"/>
+
+                <EditText
+                    android:id="@+id/activityAccount_etName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="4"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_weight="4"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_username"/>
+
+                <EditText
+                    android:id="@+id/activityAccount_etUsername"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="4"/>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/activityAccount_btChangePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_change_password"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/cancel_button_states"
+                android:textColor="@drawable/button_text_color"/>
+
+            <LinearLayout
+                android:id="@+id/activityAccount_containerPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_new_password"/>
+
+                <EditText
+                    android:id="@+id/activityAccount_etPassword"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="3"/>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/activityAccount_btConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_confirm"
+                android:layout_marginTop="80dp"
+                android:background="@drawable/custom_button_states"
+                android:textColor="@drawable/button_text_color"/>
+
+            <Button
+                android:id="@+id/activityAccount_btCancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_cancel"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/cancel_button_states"
+                android:textColor="@drawable/button_text_color"/>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_username"/>
+    </ScrollView>
 
-            <EditText
-                android:id="@+id/activityAccount_etUsername"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_weight="4"/>
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/activityAccount_btChangePassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/button_change_password"
-            android:layout_marginTop="20dp"/>
-        
-        <LinearLayout
-            android:id="@+id/activityAccount_containerPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_new_password"/>
-
-            <EditText
-                android:id="@+id/activityAccount_etPassword"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:layout_marginStart="10dp"
-                android:layout_weight="3"/>
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/activityAccount_btConfirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/button_confirm"
-            android:layout_marginTop="30dp"/>
-
-        <Button
-            android:id="@+id/activityAccount_btCancel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/button_cancel"
-            android:layout_marginTop="10dp"/>
-
-    </LinearLayout>
 
 
 </RelativeLayout>

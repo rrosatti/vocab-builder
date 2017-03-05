@@ -12,4 +12,18 @@
     <!-- Splash Screen -->
     <color name="splash_screen_background">#FFF9F4</color>
 
+    <!-- Button Style -->
+    <color name="button_text_color">#A55B00</color>
+    <color name="button_pressed_text_color">#E7EAE5</color>
+    <color name="button_color">@color/colorPrimaryDark</color>
+    <color name="button_pressed">@color/colorAccent</color>
+    <color name="sign_up_button_text_color">#E7EAE5</color>
+    <color name="sign_up_button_pressed_text_color">#A55B00</color>
+    <color name="sign_up_button_color">#C66D00</color>
+    <color name="sign_up_button_pressed_color">@color/colorPrimaryDark</color>
+    <color name="cancel_button_text_color">#E7EAE5</color>
+    <color name="cancel_button_pressed_text_color">#F4330C</color>
+    <color name="cancel_button_color">#FFC971</color>
+    <color name="cancel_button_pressed_color">#FFB627</color>
+
 </resources>

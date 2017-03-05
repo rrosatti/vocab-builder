@@ -75,7 +75,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/button_play"
-            android:layout_marginTop="60dp"/>
+            android:layout_marginTop="60dp"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:background="@drawable/custom_button_states"
+            android:textColor="@drawable/button_text_color"/>
 
     </LinearLayout>
 
