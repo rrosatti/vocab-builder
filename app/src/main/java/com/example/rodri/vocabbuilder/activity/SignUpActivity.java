@@ -72,11 +72,11 @@ public class SignUpActivity extends AppCompatActivity {
 
                 if (userId != 0) {
                     String message = getString(R.string.toast_sign_up_success);
-                    Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_SHORT).show();
+                    util.showGreenTheme(SignUpActivity.this, message);
                     finish();
                 } else {
                     String message = getString(R.string.toast_sign_up_fail);
-                    Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_SHORT).show();
+                    util.showRedThemeToast(SignUpActivity.this, message);
                     finish();
                 }
 
@@ -93,15 +93,15 @@ public class SignUpActivity extends AppCompatActivity {
     private boolean validateFields() {
         if (util.isEditTextEmpty(etName)) {
             String message = getString(R.string.toast_name_field_empty);
-            Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_SHORT).show();
+            util.showRedThemeToast(SignUpActivity.this, message);
             return false;
         } else if (util.isEditTextEmpty(etUsername)) {
             String message = getString(R.string.toast_username_field_empty);
-            Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_SHORT).show();
+            util.showRedThemeToast(SignUpActivity.this, message);
             return false;
         } else if (util.isEditTextEmpty(etPassword)) {
             String message = getString(R.string.toast_password_field_empty);
-            Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_SHORT).show();
+            util.showRedThemeToast(SignUpActivity.this, message);
             return false;
         } else {
             return true;

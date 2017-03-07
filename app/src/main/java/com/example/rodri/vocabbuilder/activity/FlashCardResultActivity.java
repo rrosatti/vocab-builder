@@ -14,6 +14,7 @@ import com.example.rodri.vocabbuilder.adapter.FlashCardResultAdapter;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
 import com.example.rodri.vocabbuilder.model.GameProgress;
+import com.example.rodri.vocabbuilder.util.Util;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class FlashCardResultActivity extends AppCompatActivity {
     private GameProgress gameProgress;
     private List<DetailedWord> detailedWordList;
     private FlashCardResultAdapter adapter;
+    private Util util = new Util();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +44,8 @@ public class FlashCardResultActivity extends AppCompatActivity {
         gameProgress = tryToGetGameProgress();
 
         if (gameProgress == null) {
-            Toast.makeText(this, R.string.toast_something_went_wrong, Toast.LENGTH_SHORT).show();
+            String message = getString(R.string.toast_something_went_wrong);
+            util.showRedThemeToast(FlashCardResultActivity.this, message);
         } else {
             showResults();
         }

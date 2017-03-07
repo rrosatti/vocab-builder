@@ -15,6 +15,7 @@ import com.example.rodri.vocabbuilder.R;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
 import com.example.rodri.vocabbuilder.model.Login;
 import com.example.rodri.vocabbuilder.model.User;
+import com.example.rodri.vocabbuilder.util.Util;
 
 /**
  * Created by rodri on 3/3/2017.
@@ -32,6 +33,7 @@ public class AccountActivity extends AppCompatActivity {
     private MyDataSource dataSource;
     private String sName, sUsername, sPassword;
     private User user;
+    private Util util = new Util();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +47,8 @@ public class AccountActivity extends AppCompatActivity {
         if (user != null) {
             updateViews();
         } else {
-            Toast.makeText(AccountActivity.this, R.string.toast_something_went_wrong, Toast.LENGTH_SHORT).show();
+            String message = getString(R.string.toast_something_went_wrong);
+            util.showRedThemeToast(this, message);
             finish();
         }
 
@@ -72,8 +75,8 @@ public class AccountActivity extends AppCompatActivity {
                 sPassword = etPassword.getText().toString();
 
                 if (sName.isEmpty() || sUsername.isEmpty() || sPassword.isEmpty()) {
-                    Toast.makeText(AccountActivity.this, R.string.toast_all_fields_must_be_filled,
-                            Toast.LENGTH_SHORT).show();
+                    String message = getString(R.string.toast_all_fields_must_be_filled);
+                    util.showRedThemeToast(AccountActivity.this, message);
                 } else {
                     showDialog();
                 }
@@ -104,7 +107,8 @@ public class AccountActivity extends AppCompatActivity {
                     dialog.cancel();
                     finish();
                 } else {
-                    Toast.makeText(AccountActivity.this, R.string.toast_something_went_wrong, Toast.LENGTH_SHORT).show();
+                    String message = getString(R.string.toast_something_went_wrong);
+                    util.showRedThemeToast(AccountActivity.this, message);
                     dialog.cancel();
                 }
             }

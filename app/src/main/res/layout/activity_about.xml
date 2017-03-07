@@ -16,7 +16,7 @@
             android:text="@string/text_about"
             android:textAlignment="center"
             android:textSize="16sp"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="#824700"/>
 
     </ScrollView>
 

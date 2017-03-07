@@ -105,11 +105,11 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validateFields() {
         if (util.isEditTextEmpty(etUsername)) {
             String message = getString(R.string.toast_username_field_empty);
-            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+            util.showRedThemeToast(this, message);
             return false;
         } else if (util.isEditTextEmpty(etPassword)) {
             String message = getString(R.string.toast_password_field_empty);
-            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+            util.showRedThemeToast(this, message);
             return false;
         } else {
             return true;

@@ -16,6 +16,7 @@ import com.example.rodri.vocabbuilder.model.GameProgress;
 import com.example.rodri.vocabbuilder.model.Login;
 import com.example.rodri.vocabbuilder.model.SpacedRepetition;
 import com.example.rodri.vocabbuilder.service.GameProgressService;
+import com.example.rodri.vocabbuilder.util.Util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,6 +34,8 @@ public class FlashCardActivity extends AppCompatActivity implements IFlashCardIn
     private CardPagerAdapter cardAdapter;
     private MyDataSource dataSource;
     private GameProgress gameProgress;
+    private Util util = new Util();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +54,8 @@ public class FlashCardActivity extends AppCompatActivity implements IFlashCardIn
             cardAdapter = new CardPagerAdapter(getFragmentManager(), wordsIds);
             pager.setAdapter(cardAdapter);
         } else {
-            Toast.makeText(this, R.string.toast_no_words_to_review, Toast.LENGTH_SHORT).show();
+            String message = getString(R.string.toast_no_words_to_review);
+            util.showGreenTheme(FlashCardActivity.this, message);
             finish();
         }
 
@@ -67,7 +71,6 @@ public class FlashCardActivity extends AppCompatActivity implements IFlashCardIn
 
             long userId = Login.getInstance().getUserId();
             return dataSource.getWordsThatNeedToReview(userId, numOfWords);
-            //return dataSource.getDetailedWordsIds(userId, numOfWords);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,7 +99,8 @@ public class FlashCardActivity extends AppCompatActivity implements IFlashCardIn
             setResult(Activity.RESULT_OK);
             finish();
         } else {
-            Toast.makeText(this, R.string.toast_something_went_wrong, Toast.LENGTH_SHORT).show();
+            String message = getString(R.string.toast_something_went_wrong);
+            util.showRedThemeToast(FlashCardActivity.this, message);
         }
     }
 

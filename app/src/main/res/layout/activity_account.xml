@@ -59,8 +59,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/button_change_password"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/cancel_button_states"
-                android:textColor="@drawable/button_text_color"/>
+                android:background="@drawable/sign_up_button_states"
+                android:textColor="@drawable/sign_up_button_text_color"/>
 
             <LinearLayout
                 android:id="@+id/activityAccount_containerPassword"

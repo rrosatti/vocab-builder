@@ -112,12 +112,12 @@ public class NewWordActivity extends AppCompatActivity {
 
                     if (inserted1 && inserted2 && inserted3 && inserted4) {
                         String message = getString(R.string.toast_new_word_created);
-                        Toast.makeText(NewWordActivity.this, message, Toast.LENGTH_SHORT).show();
+                        util.showGreenTheme(NewWordActivity.this, message);
                         setResult(Activity.RESULT_OK);
                         finish();
                     } else {
                         String message = getString(R.string.toast_something_went_wrong);
-                        Toast.makeText(NewWordActivity.this, message, Toast.LENGTH_SHORT).show();
+                        util.showRedThemeToast(NewWordActivity.this, message);
                     }
                 }
 
@@ -133,11 +133,11 @@ public class NewWordActivity extends AppCompatActivity {
     private boolean validateFields() {
         if (util.isEditTextEmpty(etWord)) {
             String message = getString(R.string.toast_word_field_empty);
-            Toast.makeText(NewWordActivity.this, message, Toast.LENGTH_SHORT).show();
+            util.showRedThemeToast(NewWordActivity.this, message);
             return false;
         } else if (util.isEditTextEmpty(etTrans1) && util.isEditTextEmpty(etTrans2) && util.isEditTextEmpty(etTrans3)) {
             String message = getString(R.string.toast_translation_fields_empty);
-            Toast.makeText(NewWordActivity.this, message, Toast.LENGTH_SHORT).show();
+            util.showRedThemeToast(NewWordActivity.this, message);
             return false;
         } else {
             return true;

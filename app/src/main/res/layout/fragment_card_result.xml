@@ -8,6 +8,9 @@
         android:layout_height="wrap_content"
         android:text="@string/button_result"
         android:textSize="60sp"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:background="@drawable/custom_button_states"
+        android:textColor="@drawable/button_text_color"
+        android:padding="4dp"/>
 
 </RelativeLayout>

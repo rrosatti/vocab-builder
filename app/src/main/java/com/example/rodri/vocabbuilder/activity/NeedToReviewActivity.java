@@ -13,6 +13,7 @@ import com.example.rodri.vocabbuilder.database.MyDataSource;
 import com.example.rodri.vocabbuilder.database.MySQLiteHelper;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
 import com.example.rodri.vocabbuilder.model.Login;
+import com.example.rodri.vocabbuilder.util.Util;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class NeedToReviewActivity extends AppCompatActivity {
     private MyDataSource dataSource;
     private List<DetailedWord> detailedWords;
     private ReviewWordAdapter adapter;
+    private Util util = new Util();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +45,8 @@ public class NeedToReviewActivity extends AppCompatActivity {
             listOfWords.setLayoutManager(llm);
             listOfWords.setAdapter(adapter);
         } else {
-            Toast.makeText(this, R.string.toast_nothing_to_show, Toast.LENGTH_SHORT).show();
+            String message = getString(R.string.toast_nothing_to_show);
+            util.showGreenTheme(NeedToReviewActivity.this, message);
             finish();
         }
     }

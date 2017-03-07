@@ -738,6 +738,7 @@ public class MyDataSource{
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             wordsIds.add(cursor.getLong(1));
+            cursor.moveToNext();
         }
 
         cursor.close();
@@ -757,6 +758,7 @@ public class MyDataSource{
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             userIds.add(cursor.getLong(0));
+            cursor.moveToNext();
         }
 
         cursor.close();

@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.example.rodri.vocabbuilder.R;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
+import com.example.rodri.vocabbuilder.util.Util;
 
 /**
  * Created by rodri on 2/1/2017.
@@ -22,6 +23,7 @@ public class Login {
     private boolean isConnected;
     private MyDataSource dataSource;
     private Activity activity;
+    private Util util = new Util();
 
     private Login() {
         username = "";
@@ -51,11 +53,11 @@ public class Login {
 
             if (user == null) {
                 String message = activity.getString(R.string.toast_login_failed);
-                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                util.showRedThemeToast(getActivity(), message);
                 return false;
             } else {
                 String message = activity.getString(R.string.toast_login_succeeded);
-                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                util.showGreenTheme(getActivity(), message);
                 isConnected = true;
                 userId = user.getId();
                 return true;
@@ -75,5 +77,7 @@ public class Login {
     public long getUserId() {
         return userId;
     }
+
+    public Activity getActivity() { return activity; }
 
 }

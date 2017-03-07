@@ -26,4 +26,10 @@
     <color name="cancel_button_color">#FFC971</color>
     <color name="cancel_button_pressed_color">#FFB627</color>
 
+    <!-- Other -->
+    <color name="red_dark">#703328</color>
+    <color name="toast_start_color">#F8F4F4</color>
+    <color name="toast_end_color">#F4EFEE</color>
+    <color name="dark_green">#134A2F</color>
+
 </resources>

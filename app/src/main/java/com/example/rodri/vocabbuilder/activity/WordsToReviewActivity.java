@@ -11,6 +11,7 @@ import com.example.rodri.vocabbuilder.R;
 import com.example.rodri.vocabbuilder.adapter.ReviewWordAdapter;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
+import com.example.rodri.vocabbuilder.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class WordsToReviewActivity extends AppCompatActivity {
     private ReviewWordAdapter adapter;
     private List<DetailedWord> detailedWords = new ArrayList<>();
     private long userId;
+    private Util util = new Util();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,7 +74,8 @@ public class WordsToReviewActivity extends AppCompatActivity {
     }
 
     private void _finishActivity() {
-        Toast.makeText(this, R.string.toast_something_went_wrong, Toast.LENGTH_SHORT).show();
+        String message = getString(R.string.toast_something_went_wrong);
+        util.showRedThemeToast(WordsToReviewActivity.this, message);
         finish();
     }
 }

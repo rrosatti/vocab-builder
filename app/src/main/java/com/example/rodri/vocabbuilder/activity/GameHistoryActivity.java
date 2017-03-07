@@ -18,6 +18,7 @@ import com.example.rodri.vocabbuilder.adapter.GameHistoryAdapter;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
 import com.example.rodri.vocabbuilder.model.Game;
 import com.example.rodri.vocabbuilder.model.Login;
+import com.example.rodri.vocabbuilder.util.Util;
 
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class GameHistoryActivity extends AppCompatActivity {
     private List<Game> games;
     private ProgressBar progressBar;
     private LinearLayout containerBottom;
+    private Util util = new Util();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -129,8 +131,8 @@ public class GameHistoryActivity extends AppCompatActivity {
                 containerBottom.setVisibility(View.VISIBLE);
 
             } else {
-                Toast.makeText(GameHistoryActivity.this,
-                        R.string.toast_no_games_history_to_show, Toast.LENGTH_SHORT).show();
+                String message = getString(R.string.toast_no_games_history_to_show);
+                util.showGreenTheme(GameHistoryActivity.this, message);
                 finish();
             }
         }
