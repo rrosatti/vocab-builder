@@ -13,12 +13,15 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.rodri.vocabbuilder.R;
+import com.example.rodri.vocabbuilder.adapter.LanguageSpinnerAdapter;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
 import com.example.rodri.vocabbuilder.model.Login;
 import com.example.rodri.vocabbuilder.util.DateUtil;
 import com.example.rodri.vocabbuilder.util.Util;
 
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by rodri on 2/5/2017.
@@ -33,11 +36,13 @@ public class NewWordActivity extends AppCompatActivity {
     private Spinner spinnerLangs;
     private Button btConfirm;
     private Button btCancel;
-    private String[] languages;
+    //private String[] languages;
+    private List<String> languages;
     private int langSelected = 0;
     private MyDataSource dataSource;
     private Util util = new Util();
     private DateUtil dateUtil = new DateUtil();
+    private LanguageSpinnerAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,9 +51,10 @@ public class NewWordActivity extends AppCompatActivity {
 
         iniViews();
         dataSource = new MyDataSource(this);
-        languages = getResources().getStringArray(R.array.languages);
+        languages = Arrays.asList(getResources().getStringArray(R.array.languages));
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, languages);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, languages);
+        adapter = new LanguageSpinnerAdapter(this, languages);
         spinnerLangs.setAdapter(adapter);
 
         spinnerLangs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

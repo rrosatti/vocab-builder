@@ -46,7 +46,10 @@ public class ReviewWordsService extends Service {
         if (usersIds != null) {
             for (int i=0; i<usersIds.size(); i++) {
                 List<Long> wordsIds = getWords(usersIds.get(i));
-                showNotification(usersIds.get(i), wordsIds.size());
+                if (wordsIds != null) {
+                    showNotification(usersIds.get(i), wordsIds.size());
+                }
+
             }
         }
     }

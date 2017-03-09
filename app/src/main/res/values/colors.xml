@@ -31,5 +31,6 @@
     <color name="toast_start_color">#F8F4F4</color>
     <color name="toast_end_color">#F4EFEE</color>
     <color name="dark_green">#134A2F</color>
+    <color name="spinner_background">#F7F7F7</color>
 
 </resources>
