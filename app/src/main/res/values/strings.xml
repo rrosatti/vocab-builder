@@ -18,6 +18,7 @@
     <string name="button_play">Play</string>
     <string name="button_result">Result</string>
     <string name="button_change_password">Change Password</string>
+    <string name="button_edit">Edit</string>
 
     <!-- Toast -->
     <string name="toast_login_failed">username or password are incorrect!</string>
@@ -35,6 +36,7 @@
     <string name="toast_all_fields_must_be_filled">All fields must be filled!</string>
     <string name="toast_no_games_history_to_show">There\'s no game history to show!</string>
     <string name="toast_nothing_to_show">There\'s nothing to show!</string>
+    <string name="toast_word_updated">A word was updated. Please, refresh the page!</string>
 
     <!-- Languages -->
     <string-array name="languages">
@@ -90,7 +92,6 @@
     <string name="text_name">Name</string>
     <string name="text_username">Username</string>
     <string name="text_new_password">New Password</string>
-
 
     <!-- Statistics List -->
     <array name="statistics_list">

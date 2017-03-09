@@ -95,6 +95,15 @@
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/dialogDetailedWord_btEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/button_edit"
+            android:background="@drawable/custom_button_states"
+            android:textColor="@drawable/button_text_color"/>
+
 
     </LinearLayout>
 

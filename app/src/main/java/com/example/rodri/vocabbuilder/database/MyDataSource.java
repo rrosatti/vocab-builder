@@ -896,6 +896,20 @@ public class MyDataSource{
         else return false;
     }
 
+    public boolean updateWord(long wordId, String name, String trans1, String trans2, String trans3) {
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.KEY_NAME, name);
+        values.put(MySQLiteHelper.COLUMN_TRANSLATION1, trans1);
+        values.put(MySQLiteHelper.COLUMN_TRANSLATION2, trans2);
+        values.put(MySQLiteHelper.COLUMN_TRANSLATION3, trans3);
+
+        int affectedRows = db.update(MySQLiteHelper.TABLE_WORD, values,
+                MySQLiteHelper.KEY_ID + " = " + wordId, null);
+
+        if (affectedRows > 0) return true;
+        else return false;
+    }
+
     /** --------------- OTHER --------------- **/
 
     private boolean isCursorEmpty(Cursor cursor) {

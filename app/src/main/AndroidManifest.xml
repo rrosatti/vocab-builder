@@ -29,6 +29,7 @@
         <activity android:name=".activity.WordsToReviewActivity" android:theme="@style/AppTheme2"/>
         <activity android:name=".activity.AccountActivity" android:theme="@style/AppTheme2"/>
         <activity android:name=".activity.AboutActivity" android:theme="@style/AppTheme2"/>
+        <activity android:name=".activity.EditWordActivity" android:theme="@style/AppTheme2" />
 
         <service android:name=".service.ReviewWordsService" />
 

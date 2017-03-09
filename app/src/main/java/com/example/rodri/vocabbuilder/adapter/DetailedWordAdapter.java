@@ -2,6 +2,7 @@ package com.example.rodri.vocabbuilder.adapter;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.v4.app.Fragment;
@@ -10,10 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rodri.vocabbuilder.R;
+import com.example.rodri.vocabbuilder.activity.EditWordActivity;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
 import com.example.rodri.vocabbuilder.model.DetailedWord;
 import com.example.rodri.vocabbuilder.model.GameLog;
@@ -40,6 +44,7 @@ public class DetailedWordAdapter extends RecyclerView.Adapter<DetailedWordAdapte
     private TextView dialogTxtCorrect;
     private TextView dialogTxtIncorrect;
     private TextView dialogTxtLast5games;
+    private Button btEdit;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageView imgFlag;
@@ -109,10 +114,10 @@ public class DetailedWordAdapter extends RecyclerView.Adapter<DetailedWordAdapte
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    private void showDialog(int pos) {
-        DetailedWord dWord = detailedWords.get(pos);
+    private void showDialog(final int pos) {
+        final DetailedWord dWord = detailedWords.get(pos);
 
-        Dialog dialog = new Dialog(activity);
+        final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_detailed_word);
         dialog.setCancelable(true);
@@ -142,6 +147,16 @@ public class DetailedWordAdapter extends RecyclerView.Adapter<DetailedWordAdapte
         String last5Games = getLast5Games(dWord.getWord().getId());
         dialogTxtLast5games.setText(last5Games);
 
+        btEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(activity, EditWordActivity.class);
+                i.putExtra("wordId", dWord.getWord().getId());
+                activity.startActivityForResult(i, 1);
+                dialog.cancel();
+            }
+        });
+
         dialog.show();
         
     }
@@ -154,6 +169,7 @@ public class DetailedWordAdapter extends RecyclerView.Adapter<DetailedWordAdapte
         dialogTxtCorrect = (TextView) dialog.findViewById(R.id.dialogDetailedWord_txtCorrect);
         dialogTxtIncorrect = (TextView) dialog.findViewById(R.id.dialogDetailedWord_txtIncorrect);
         dialogTxtLast5games = (TextView) dialog.findViewById(R.id.dialogDetailedWord_txtLast5games);
+        btEdit = (Button) dialog.findViewById(R.id.dialogDetailedWord_btEdit);
     }
 
     private String getTranslations(Word word) {
