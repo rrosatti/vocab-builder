@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,23 @@ public class Util {
 
         TextView txtMessage = (TextView) customView.findViewById(R.id.toastGreenTheme_txtMessage);
         txtMessage.setText(message);
+
+        toast.setView(customView);
+        showToast(toast);
+    }
+
+    public void showOrangeThemeWithImage(Activity activity, String message, int imageId) {
+        Context context = activity.getApplicationContext();
+        LayoutInflater inflater = activity.getLayoutInflater();
+
+        View customView = inflater.inflate(R.layout.toast_orange_theme_with_image, null);
+        Toast toast = new Toast(context);
+
+        TextView txtMessage = (TextView) customView.findViewById(R.id.toastOrangeThemeWithImage_txtMessage);
+        ImageView img = (ImageView) customView.findViewById(R.id.toastOrangeThemeWithImage_img);
+
+        txtMessage.setText(message);
+        img.setImageResource(imageId);
 
         toast.setView(customView);
         showToast(toast);

@@ -36,7 +36,7 @@
     <string name="toast_all_fields_must_be_filled">All fields must be filled!</string>
     <string name="toast_no_games_history_to_show">There\'s no game history to show!</string>
     <string name="toast_nothing_to_show">There\'s nothing to show!</string>
-    <string name="toast_word_updated">A word was updated. Please, refresh the page!</string>
+    <string name="toast_word_updated">Word updated. Please, refresh the page!</string>
 
     <!-- Languages -->
     <string-array name="languages">

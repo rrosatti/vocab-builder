@@ -150,7 +150,9 @@ public class EditWordActivity extends AppCompatActivity {
 
                 if (saved) {
                     String message = getString(R.string.toast_word_updated);
-                    util.showGreenTheme(EditWordActivity.this, message);
+                    int imageId = R.drawable.refresh_icon;
+                    //util.showGreenTheme(EditWordActivity.this, message);
+                    util.showOrangeThemeWithImage(EditWordActivity.this, message, imageId);
                     dialog.cancel();
                     setResult(Activity.RESULT_OK);
                     finish();
