@@ -6,7 +6,7 @@
     <item>
         <bitmap
             android:gravity="center_horizontal|center_vertical"
-            android:src="@drawable/vocab_builder_title" />
+            android:src="@drawable/owl_256" />
     </item>
 
 </layer-list>

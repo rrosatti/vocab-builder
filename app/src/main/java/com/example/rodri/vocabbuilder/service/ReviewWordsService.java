@@ -12,6 +12,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.NotificationCompat;
 
 import com.example.rodri.vocabbuilder.R;
+import com.example.rodri.vocabbuilder.activity.WordsToReviewActivity;
 import com.example.rodri.vocabbuilder.database.MyDataSource;
 import com.example.rodri.vocabbuilder.model.User;
 
@@ -39,11 +40,22 @@ public class ReviewWordsService extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
+        System.out.println("onStart() ReviewWordsService");
         dataSource = new MyDataSource(getApplicationContext());
-        List<Long> usersIds = getUsersActiveNotification();
+        //List<Long> usersIds = getUsersActiveNotification();
+        sharedPreferences = getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
+        long userId = sharedPreferences.getLong(USER_ID, 0);
 
+        if (userId != 0) {
+            List<Long> wordsIds = getWords(userId);
+            if (wordsIds != null) {
+                showNotification(userId, wordsIds.size());
+            }
+        }
 
-        if (usersIds != null) {
+        //Old implementation considering multiple users
+        /**
+        if (usersId != null) {
             for (int i=0; i<usersIds.size(); i++) {
                 List<Long> wordsIds = getWords(usersIds.get(i));
                 if (wordsIds != null) {
@@ -51,7 +63,7 @@ public class ReviewWordsService extends Service {
                 }
 
             }
-        }
+        }*/
     }
 
     private List<Long> getUsersActiveNotification() {
@@ -91,12 +103,12 @@ public class ReviewWordsService extends Service {
         // need to change the icon
         NotificationCompat.Builder mBuilder = (android.support.v7.app.NotificationCompat.Builder)
                 new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.german)
+                .setSmallIcon(R.drawable.owl_256)
                 .setContentTitle("VocabBuilder")
                 .setContentText(message)
                 .setAutoCancel(true);
 
-        /**Intent resultIntent = new Intent(this, WordsToReviewActivity.class);
+        Intent resultIntent = new Intent(this, WordsToReviewActivity.class);
         resultIntent.putExtra("userId", userId);
 
         // The Stack Builder ensures that navigating backwards from the Activity leads out of
@@ -112,7 +124,7 @@ public class ReviewWordsService extends Service {
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(mNotificationId, mBuilder.build());
-*/
+
     }
 
     private User getUser(long userId) {

@@ -10,7 +10,7 @@
     <color name="preloader_end">@color/colorPrimary</color>
 
     <!-- Splash Screen -->
-    <color name="splash_screen_background">#FFF9F4</color>
+    <color name="splash_screen_background">#F7C180</color>
 
     <!-- Button Style -->
     <color name="button_text_color">#A55B00</color>
